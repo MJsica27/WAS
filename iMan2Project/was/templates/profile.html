@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'was/profile_style.css' %}">
+    <title>My Profile</title>
+</head>
+<body>
+<section class="main-section">
+    <header>
+
+    </header>
+    <section class="profile-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="profile-content">
+            <h2 style="margin-bottom: 10px">Account Details:</h2>
+            <p style="margin-bottom: 5px"><strong>Username:</strong> {{ user.username }}</p>
+            <p style="margin-bottom: 5px"><strong>Email:</strong> {{ user.email}}</p>
+            <!-- <p style="margin-bottom: 5px"><strong>Password:</strong> REDACTED</p> -->
+            <br>
+            <h2 style="margin-bottom: 10px">Personal Details:</h2>
+            <p style="margin-bottom: 5px"><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p style="margin-bottom: 5px"><strong>Middle Initial:</strong> {{ user.middle_initial }}</p>
+            <p style="margin-bottom: 5px"><strong>Last Name:</strong> {{ user.last_name }}</p>
+
+            <br>
+            <br>
+
+            <div class="button-container">
+                <button id="deleteAccountButton" class="square-button">Delete Account</button>
+                <button id="logoutButton" class="square-button">Logout</button>
+            </div>
+        </div>
+    </section>
+</section>
+
+<div id="deleteAccountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete Account?</h2>
+        </div>
+        <div class="modal-buttons">
+            <form method="post" action="{% url 'delete_account' %}">
+                {% csrf_token %}
+                <button class="modal-button">Yes</button>
+            </form>
+            <button class="modal-button" onclick="closeDeleteAccountModal()">No</button>
+        </div>
+    </div>
+</div>
+
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Logout?</h2>
+        </div>
+        <div class="modal-buttons">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="modal-button">Yes</button>
+            </form>
+            <button class="modal-button" onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteAccountModal = document.getElementById("deleteAccountModal");
+    var deleteAccountBtn = document.getElementById("deleteAccountButton");
+
+    deleteAccountBtn.onclick = function() {
+        deleteAccountModal.classList.add("show");
+    }
+
+    function closeDeleteAccountModal() {
+        deleteAccountModal.classList.remove("show");
+    }
+
+    var logoutModal = document.getElementById("logoutModal");
+    var logoutBtn = document.getElementById("logoutButton");
+
+    logoutBtn.onclick = function() {
+        logoutModal.classList.add("show");
+    }
+
+    function closeLogoutModal() {
+        logoutModal.classList.remove("show");
+    }
+
+    window.onclick = function(event) {
+        if (event.target == logoutModal) {
+            closeLogoutModal();
+        }
+        if (event.target == deleteAccountModal) {
+            closeDeleteAccountModal();
+        }
+    }
+</script>
+
+</body>
+</html>

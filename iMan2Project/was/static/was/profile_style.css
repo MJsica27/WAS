@@ -1,0 +1,138 @@
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            position: relative;
+        }
+
+        header {
+            background-color: #212121;
+            padding: 60px;
+            color: white;
+            border-bottom: 3px solid #1b1b1b;
+        }
+
+        .main-section{
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            position: relative;
+        }
+
+        .profile-section{
+            display: flex;
+            flex: 1;
+        }
+
+        .profile-content {
+            flex: 3;
+            background-color: #EFEFEF;
+            padding: 35px;
+            position: relative;
+        }
+
+        .left-bar {
+            flex: 0.10;
+            background: #f5dc60;
+            padding: 20px;
+            border-right: 3px solid #f1d879;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            position: absolute;
+            bottom: 20px;
+            left: 35px;
+            padding-top: 10px;
+        }
+
+        .square-button {
+            background-color: #212121;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 150px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .square-button:hover {
+            background-color: #706F69;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #E3E7EE;
+            margin: 20% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        .modal-header {
+            background-color: #212121;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .modal-body {
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            background-color: #212121;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .modal-button:hover {
+            background-color: #706F69;
+        }
+
+        #deleteAccountModal {
+            display: none;
+        }
+
+        #deleteAccountModal.show {
+            display: block;
+        }
