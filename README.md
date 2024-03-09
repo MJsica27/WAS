@@ -10,11 +10,15 @@ In WAS, We Aim for Success!
 <br>
 
 ## Downloading/Cloning the Project
-* Download the project by downloading the Zip file, extract it and open the project via **VSCode** or **PyCharm**
-* Clone the project by using `git clone` through git bash
+### Download:
+1. Download the project by downloading the Zip file
+2. Extract it and open the project via **VSCode** or **PyCharm**
+### Clone:
+1. Clone the project by using `git clone` through git bash
 ```
 git clone https://github.com/MJsica27/WAS.git
 ```
+2. Open the project via **VSCode** or **PyCharm**
 
 <br>
 
