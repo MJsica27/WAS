@@ -64,7 +64,7 @@ py manage.py runserver
 
 | Database | |
 | ------ | ------ | 
-| **DBMS:** | MySQL (managed with [XAMPP](https://www.apachefriends.org/)) |
+| **DBMS:** | MySQL (w/ [XAMPP](https://www.apachefriends.org/)) |
 | **Database Name:** | was |
 
 <br>
