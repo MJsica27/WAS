@@ -15,10 +15,10 @@
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags == 'error' %}    
-                    <p style="color: rgb(255, 44, 76)">{{ message }}</p>
-                  {% endif %}
-                {% if message.tags == 'success' %}  
-                   <p style="color: rgb(9, 159, 19)">{{ message }}</p>
+                    <p style="color: rgb(255, 44, 76); font-size: 15px; text-align: center">{{ message }}</p>
+                {% endif %}
+                {% if message.tags == 'success' %}
+                   <p style="color: rgb(9, 159, 19); font-size: 15px; text-align: center">{{ message }}</p>
                 {% endif %}
             {% endfor %}
         {% endif %}
