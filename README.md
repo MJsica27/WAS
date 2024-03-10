@@ -2,28 +2,34 @@
   <img src="https://i.imgur.com/zMWjD2l.png" alt="Alt text" title="WAS LOGO">
 </p>
 
-# WAS (Wildcats Academic Sync)
+<h2 align='center'>WAS<br><sub align='center'>(Wildcats Academic Sync)</sub></h2>
+<br>
 Wildcats Academic Sync or WAS is a user-friendly web application that helps students organize their academic responsibilities effortlessly. With a focus on simplicity, WAS offers the basic CRUD (Create, Read, Update, Delete) functions for managing student's courses with their respective study tasks and grades. Students can easily add, view, update, and delete information related to their studies, allowing them to stay on top of their academic journey.
 
 In WAS, We Aim for Success!
 
 <br>
 
-## Downloading/Cloning the Project
+<h2 align='center'>💻 Downloading/Cloning the Project</h2>
+<br>
+
 ### Download:
 1. Download the project by downloading the Zip file
-2. Extract it and open the project via **VSCode** or **PyCharm**
+2. Extract it and open the project via **[VSCode](https://code.visualstudio.com/)** or **[PyCharm](https://www.jetbrains.com/pycharm/)**
 ### Clone:
-1. Clone the project by using `git clone` through git bash
+1. Clone the project by using `git clone` with [Git Bash](https://git-scm.com/downloads)
 ```
 git clone https://github.com/MJsica27/WAS.git
 ```
-2. Open the project via **VSCode** or **PyCharm**
+2. Open the project via **[VSCode](https://code.visualstudio.com/)** or **[PyCharm](https://www.jetbrains.com/pycharm/)**
 
 <br>
 
-## Activating the Virtual Environment (`activate.bat` File)
-1. Go to the **Scripts** directory
+<h2 align='center'>💻 Running the Project</h2>
+<br>
+
+### Activate the Virtual Environment (`activate.bat` File):
+1. Go to the **[Scripts](https://github.com/MJsica27/WAS/tree/main/venv/Scripts)** directory
 ```
 cd venv
 ```
@@ -39,13 +45,10 @@ cd Scripts
 ```
 .\venv\Scripts\activate.bat
 ```
-
-<br>
-
-## Running the Server
-1. Open your **Xampp** and start the database
+### Run the Server:
+1. Open your **[Xampp](https://www.apachefriends.org/)** and start the database
 > Assuming that you already have a database named **was** and migrated
-2. Go to the **iMan2Project** directory
+2. Go to the **[iMan2Project](https://github.com/MJsica27/WAS/tree/main/iMan2Project)** directory
 ```
 cd iMan2Project
 ```
@@ -56,7 +59,8 @@ py manage.py runserver
 
 <br>
 
-## Other Info
+<h2 align='center'>💻 Project Info</h2>
+<br>
 
 | Softwares Used: | | | 
 | ------ | ------- | ------ |
@@ -69,7 +73,9 @@ py manage.py runserver
 
 <br>
 
-## Fixes
+<h2 align='center'>💻 Fixes</h2>
+<br>
+
 ### ImportError: No module named 'MySQL'
 1. Open `cmd` and run the commands
   ```
