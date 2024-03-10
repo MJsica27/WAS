@@ -1,36 +1,75 @@
+ 
 body {
-  /* background-color: yellow; */
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f5dc60;
   height: 100vh;
+  background-image: url('../was/wildcats_logo_black.png'), url('../was/wildcats_logo_black.png');    
+  background-size: 50% auto, 50% auto;
+  background-repeat: no-repeat;  
+  background-position: -373px 0px, 1150px 0px;  
 }
+
+ 
 form {
   width: 250px;
   display: flex;
   flex-direction: column;
-  background-color: #EFEFEF;
-  /* align-items: center; */
+  background-color: rgba(239, 239, 239, 0.5);  
   padding: 30px;
   justify-content: center;
   box-shadow: 5px 5px rgba(16, 16, 16, 0.1);
+  border-radius: 10px;  
 }
-h1 {
-  margin: 0px;
+ 
+.header h1 {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999; 
+  color: snow; 
+}
+
+ 
+.form-line {
+  margin: 0;
   margin-bottom: 10px;
   text-align: center;
 }
 
+ 
 .input-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: -20px;
 }
+
+.input-container label {
+  font-weight: bold;  
+  margin-bottom: 5px;
+}
+
+.input-container input {
+  padding: 10px;  
+  margin-bottom: 10px;  
+  border: 1px solid #ccc;  
+  border-radius: 5px;  
+  transition: border-color 0.3s;  
+}
+
+.input-container input:focus {
+  border-color: #007bff;  
+}
+
+  
 .button-container {
   display: flex;
   justify-content: center;
   gap: 5px;
 }
+ 
 .square-button {
   background-color: #212121;
   color: white;
@@ -41,6 +80,7 @@ h1 {
   width: 100px;
   height: 40px;
   margin-top: 25px;
+  border-radius: 10px;
 }
 
 .square-button:hover {
@@ -48,6 +88,7 @@ h1 {
   box-shadow: 3px 3px rgba(16, 16, 16, 0.1);
 }
 
+ 
 .signin-link {
   text-align: center;  
 }
