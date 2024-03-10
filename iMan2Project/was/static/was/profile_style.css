@@ -1,138 +1,165 @@
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        html, body {
-            height: 100%;
-            position: relative;
-        }
+html, body {
+    height: 100%;
+    position: relative;
+}
 
-        header {
-            background-color: #212121;
-            padding: 60px;
-            color: white;
-            border-bottom: 3px solid #1b1b1b;
-        }
+header {
+    background-color: #212121;
+    padding: 60px;
+    color: white;
+    border-bottom: 3px solid #1b1b1b;
+}
 
-        .main-section{
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
-            position: relative;
-        }
+.main-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+}
 
-        .profile-section{
-            display: flex;
-            flex: 1;
-        }
+.profile-section {
+    display: flex;
+    flex: 1;
+}
 
-        .profile-content {
-            flex: 3;
-            background-color: #EFEFEF;
-            padding: 35px;
-            position: relative;
-        }
+.profile-content {
+    flex: 3;
+    background-color: #EFEFEF;
+    padding: 35px;
+    position: relative;
+}
 
-        .left-bar {
-            flex: 0.10;
-            background: #f5dc60;
-            padding: 20px;
-            border-right: 3px solid #f1d879;
-        }
+.left-bar {
+    flex: 0.10;
+    background: #f5dc60;
+    padding: 20px;
+    border-right: 3px solid #f1d879;
+}
 
-        .button-container {
-            display: flex;
-            justify-content: flex-start;
-            position: absolute;
-            bottom: 20px;
-            left: 35px;
-            padding-top: 10px;
-        }
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    bottom: 20px;
+    left: 35px;
+    padding-top: 10px;
+}
 
-        .square-button {
-            background-color: #212121;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            width: 150px;
-            height: 40px;
-            margin-right: 10px;
-        }
+.square-button {
+    background-color: #212121;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: 175px;
+    height: 40px;
+    margin-right: 10px;
+}
 
-        .square-button:hover {
-            background-color: #706F69;
-        }
+.square-edit-button {
+    background-color: #212121;
+    display: inline-block;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    height: 30px;
+    width: 50px;
+    float: right;
+}
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            opacity: 0;
-        }
+.square-button:hover, .square-edit-button:hover {
+    background-color: #706F69;
+}
 
-        .modal.show {
-            display: block;
-            opacity: 1;
-        }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    opacity: 0;
+}
 
-        .modal-content {
-            background-color: #E3E7EE;
-            margin: 20% auto;
-            padding-bottom: 20px;
-            border: 1px solid #888;
-            width: 25%;
-            box-shadow: 5px 5px rgba(16, 16, 16, 0.1);
-        }
+.modal.show {
+    display: block;
+    opacity: 1;
+    animation: fadein 0.2s;
+}
 
-        .modal-header {
-            background-color: #212121;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
+.modal-content {
+    background-color: #E3E7EE;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #888;
+    width: 25%;
+    box-shadow: 5px 5px rgba(16, 16, 16, 0.1);
+}
 
-        .modal-body {
-            text-align: center;
-        }
+.modal-header {
+    background-color: #212121;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
 
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+.modal-body {
+    text-align: center;
+}
 
-        .modal-button {
-            background-color: #212121;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 0 10px;
-        }
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
 
-        .modal-button:hover {
-            background-color: #706F69;
-        }
+.modal-button {
+    background-color: #212121;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+}
 
-        #deleteAccountModal {
-            display: none;
-        }
+.modal-button:hover {
+    background-color: #706F69;
+}
 
-        #deleteAccountModal.show {
-            display: block;
-        }
+#deleteAccountModal, #editAccountDetailsModal, #editEmailAddressModal, #editPersonalInformationModal, #changePasswordModal {
+    display: none;
+}
+
+#deleteAccountModal.show, #editAccountDetailsModal.show, #editEmailAddressModal.show, #editPersonalInformationModal.show, #changePasswordModal.show {
+    display: block;
+    animation: fadein 0.2s;
+}
+
+.profile-container {
+    border-radius: 15px;
+    border-color: rgba(238, 238, 238, 0.71);
+    border-style: ridge;
+    border-width: 2px;
+    padding: 35px;
+}

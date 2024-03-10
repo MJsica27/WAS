@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     {% load static %}
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'was/style.css' %}">
@@ -19,60 +18,240 @@
         </div>
 
         <div class="profile-content">
-            <h2 style="margin-bottom: 10px">Account Details:</h2>
-            <p style="margin-bottom: 5px"><strong>Username:</strong> {{ user.username }}</p>
-            <p style="margin-bottom: 5px"><strong>Email:</strong> {{ user.email}}</p>
-            <!-- <p style="margin-bottom: 5px"><strong>Password:</strong> REDACTED</p> -->
-            <br>
-            <h2 style="margin-bottom: 10px">Personal Details:</h2>
-            <p style="margin-bottom: 5px"><strong>First Name:</strong> {{ user.first_name }}</p>
-            <!-- <p style="margin-bottom: 5px"><strong>Middle Initial:</strong> {{ user.middle_initial }}</p> -->
-            <p style="margin-bottom: 5px"><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <h2 style="margin-bottom: 10px">My Profile</h2>
 
             <br>
-            <br>
 
-            <div class="button-container">
-                <button id="deleteAccountButton" class="square-button">Delete Account</button>
-                <button id="logoutButton" class="square-button">Logout</button>
+            <div class="profile-container" style="margin-bottom: 25px">
+                <h1 style="margin-bottom: 15px;  display: inline-block;">Account Details:</h1>
+                <button id="editAccountDetailsButton" class="square-edit-button">Edit</button>
+
+                <p style="margin-bottom: 5px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Username:</h5>
+                    {{ user.username }}
+                </p>
             </div>
+
+            <div class="profile-container" style="margin-bottom: 25px">
+                <h1 style="margin-bottom: 15px; display: inline-block">Email Address:</h1>
+                <button id="editEmailAddressButton" class="square-edit-button">Edit</button>
+
+                <p style="margin-bottom: 5px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Email Address:</h5>
+                    {{ user.email}}
+                </p>
+            </div>
+
+            <div class="profile-container" style="margin-bottom: 35px">
+                <h1 style="margin-bottom: 15px; display: inline-block">Personal Information:</h1>
+                <button id="editProfileInformationButton" class="square-edit-button">Edit</button>
+
+                <p style="margin-bottom: 5px">
+                    <h5 style="margin-bottom: 7px; color: #505050">First Name:</h5>
+                    {{ user.first_name }}
+                </p>
+
+                <!-- <p style="margin-bottom: 5px">
+                    <strong>Middle Initial:</strong>
+                    {{ user.middle_initial }}
+                </p> -->
+
+                <p style="margin-bottom: 15px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Last Name:</h5>
+                    {{ user.last_name }}
+                </p>
+            </div>
+
+             <div class="button-container">
+                 <button id="changePasswordButton" class="square-button">Change Password</button>
+                 <button id="deleteAccountButton" class="square-button">Delete Account</button>
+                 <button id="logoutButton" class="square-button">Logout</button>
+             </div>
+
         </div>
     </section>
 </section>
 
+{% if messages %}
+    {% for message in messages %}
+        <div id="snackbar">
+        {% if message.tags == 'error' %}
+            <span style="color: indianred">X</span> {{ message }}</div>
+        {% endif %}
+        {% if message.tags == 'success' %}
+            <span style="color: darkseagreen">✔</span> {{ message }}</div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<script>
+    function myFunction() {
+        const x = document.getElementById("snackbar");
+        x.classList.add("show");
+        setTimeout(function() { x.classList.remove("show"); }, 3000);
+    }
+
+    window.onload = function() {
+        myFunction();
+    };
+</script>
+
 <div id="deleteAccountModal" class="modal">
     <div class="modal-content">
+
         <div class="modal-header">
             <h2>Confirm Delete Account?</h2>
         </div>
-        <div class="modal-buttons">
-            <form method="post" action="{% url 'delete_account' %}">
+
+        <br>
+
+        <form method="post" action="{% url 'delete_account' %}">
+            <div style="text-align: center">
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+            </div>
+            <div class="modal-buttons">
                 {% csrf_token %}
                 <button class="modal-button">Yes</button>
-            </form>
-            <button class="modal-button" onclick="closeDeleteAccountModal()">No</button>
-        </div>
+
+
+                <button class="modal-button" onclick="closeDeleteAccountModal()">No</button>
+            </div>
+        </form>
     </div>
 </div>
 
 <div id="logoutModal" class="modal">
     <div class="modal-content">
+
         <div class="modal-header">
             <h2>Confirm Logout?</h2>
         </div>
+
         <div class="modal-buttons">
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button class="modal-button">Yes</button>
             </form>
+
             <button class="modal-button" onclick="closeLogoutModal()">No</button>
         </div>
+
+    </div>
+</div>
+
+<div id="editAccountDetailsModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Edit Account Details</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'edit_username' %}">
+            <div style="text-align: center">
+                <label for="new_username">New Username:</label>
+                <input type="text" id="new_username" name="new_username" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditAccountDetailsModal()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="editEmailAddressModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Edit Email Address</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'edit_email' %}">
+            <div style="text-align: center">
+                <label for="new_email">New Email:</label>
+                <input type="email" id="new_email" name="new_email" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditEmailAddressModal()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="editPersonalInformationModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Edit Personal Information</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'edit_personal_info' %}">
+            <div style="text-align: center">
+                <label for="first_name" style="display: inline-block; width: 100px;text-align: right">First Name:</label>
+                <input type="text" style="margin-bottom: 10px" id="first_name" name="first_name" required>
+                <br>
+                <label for="last_name" style="display: inline-block; width: 100px;text-align: right">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditPersonalInformationModal()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Change Password</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'change_password' %}">
+            <div style="text-align: center">
+                <label for="old_password" style="display: inline-block; width: 200px; text-align: right">Old Password:</label>
+                <input type="text" style="margin-bottom: 10px" id="old_password" name="old_password" required>
+                <br>
+                <label for="new_password" style="display: inline-block; width: 200px; text-align: right">New Password:</label>
+                <input type="text" style="margin-bottom: 10px" id="new_password" name="new_password" required>
+                <br>
+                <label for="confirm_new_password" style="display: inline-block; width: 200px; text-align: right">Confirm New Password:</label>
+                <input type="text" id="confirm_new_password" name="confirm_new_password" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeChangePasswordModal()">Cancel</button>
+            </div>
+        </form>
+
     </div>
 </div>
 
 <script>
-    var deleteAccountModal = document.getElementById("deleteAccountModal");
-    var deleteAccountBtn = document.getElementById("deleteAccountButton");
+    const deleteAccountModal = document.getElementById("deleteAccountModal");
+    const deleteAccountBtn = document.getElementById("deleteAccountButton");
 
     deleteAccountBtn.onclick = function() {
         deleteAccountModal.classList.add("show");
@@ -82,8 +261,8 @@
         deleteAccountModal.classList.remove("show");
     }
 
-    var logoutModal = document.getElementById("logoutModal");
-    var logoutBtn = document.getElementById("logoutButton");
+    const logoutModal = document.getElementById("logoutModal");
+    const logoutBtn = document.getElementById("logoutButton");
 
     logoutBtn.onclick = function() {
         logoutModal.classList.add("show");
@@ -93,12 +272,68 @@
         logoutModal.classList.remove("show");
     }
 
+    const editAccountDetailsModal = document.getElementById("editAccountDetailsModal");
+    const editAccountDetailsBtn = document.getElementById("editAccountDetailsButton");
+
+    editAccountDetailsBtn.onclick = function() {
+        editAccountDetailsModal.classList.add("show");
+    }
+
+    function closeEditAccountDetailsModal() {
+        editAccountDetailsModal.classList.remove("show");
+    }
+
+    const editEmailAddressModal = document.getElementById("editEmailAddressModal");
+    const editEmailAddressBtn = document.getElementById("editEmailAddressButton");
+
+    editEmailAddressBtn.onclick = function() {
+        editEmailAddressModal.classList.add("show");
+    }
+
+    function closeEditEmailAddressModal() {
+        editEmailAddressModal.classList.remove("show");
+    }
+
+    const editPersonalInformationModal = document.getElementById("editPersonalInformationModal");
+    const editPersonalInformationBtn = document.getElementById("editProfileInformationButton");
+
+    editPersonalInformationBtn.onclick = function() {
+        editPersonalInformationModal.classList.add("show");
+    }
+
+    function closeEditPersonalInformationModal() {
+        editPersonalInformationModal.classList.remove("show");
+    }
+
+    const changePasswordModal = document.getElementById("changePasswordModal");
+    const changePasswordBtn = document.getElementById("changePasswordButton");
+
+    changePasswordBtn.onclick = function() {
+        changePasswordModal.classList.add("show");
+    }
+
+    function closeChangePasswordModal() {
+        changePasswordModal.classList.remove("show");
+    }
+
     window.onclick = function(event) {
-        if (event.target == logoutModal) {
+        if (event.target === logoutModal) {
             closeLogoutModal();
         }
-        if (event.target == deleteAccountModal) {
+        if (event.target === deleteAccountModal) {
             closeDeleteAccountModal();
+        }
+        if (event.target === editAccountDetailsModal) {
+            closeEditAccountDetailsModal();
+        }
+        if (event.target === editEmailAddressModal) {
+            closeEditEmailAddressModal();
+        }
+        if (event.target === editPersonalInformationModal) {
+            closeEditPersonalInformationModal();
+        }
+        if (event.target === changePasswordModal) {
+            closeChangePasswordModal();
         }
     }
 </script>

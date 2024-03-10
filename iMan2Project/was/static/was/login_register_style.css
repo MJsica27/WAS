@@ -1,5 +1,4 @@
 body {
-  
   /* background-color: yellow; */
   display: flex;
   justify-content: center;
@@ -22,7 +21,6 @@ h1 {
   margin-bottom: 10px;
   text-align: center;
 }
-
 
 .input-container {
   display: flex;
