@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" href="{% static 'was/style.css'%}">
+    <link rel="stylesheet" href="{% static 'was/login_register_style.css' %}">
 </head>
 <body>
-    <h1>Register</h1>
-    <form method="post" action="{% url 'register' %}">
-
+    <form method="POST" action="{% url 'register' %}">
+        <h1>Register</h1>
         {% csrf_token %}
 
         {% if messages %}
             {% for message in messages %}
-                <p>{{ message }}</p>
+                <p style="color: rgb(255, 44, 76)">{{ message }}</p>
             {% endfor %}
         {% endif %}
 
-        <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name"><br>
-        <!-- <label for="middle_initial">Middle Initial:</label><br> -->
-        <!-- <input type="text" id="middle_initial" name="middle_initial"><br> -->
-        <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name"><br>
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br>
-        <label for="email">Email:</label><br>
-        <input type="text" id="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="confirm_password">Confirm Password:</label><br>
-        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
-        <input type="submit" value="Register">
-
+        <div class="input-container">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+            <!-- <label for="middle_initial">Middle Initial:</label> -->
+            <!-- <input type="text" id="middle_initial" name="middle_initial"> -->
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required> <br>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <div class="button-container">
+            <input type="submit" value="Register" class="square-button">
+        </div>
+        
     </form>
+    
 </body>
 </html>

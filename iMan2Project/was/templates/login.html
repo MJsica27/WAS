@@ -1,30 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="{% static 'was/style.css'%}">
+    <link rel="stylesheet" href="{% static 'was/login_register_style.css' %}">
 </head>
 <body>
-    <h1>Login</h1>
-
     <form method="post" action="{% url 'login' %}">
-
+        <h1>Login</h1>
         {% csrf_token %}
 
         {% if messages %}
             {% for message in messages %}
-                <p>{{ message }}</p>
+                {% if message.tags == 'error' %}    
+                    <p style="color: rgb(255, 44, 76)">{{ message }}</p>
+                  {% endif %}
+                {% if message.tags == 'success' %}  
+                   <p style="color: rgb(9, 159, 19)">{{ message }}</p>
+                {% endif %}
             {% endfor %}
         {% endif %}
+        <div class="input-container">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
 
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <input type="submit" value="Login">
-        <a href="{% url 'register' %}"><input type="button" value="Register"></a>
+        <div class="button-container">
+            <input type="submit" value="Login" class="square-button">
+            <a href="{% url 'register' %}"><input type="button" value="Register" class="square-button"></a>
+        </div>
     </form>
 
 </body>

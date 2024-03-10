@@ -26,6 +26,7 @@ def user_login(request):
 
 def register(request):
     if request.method == 'POST':
+        # acquire data from the form submission
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -33,14 +34,18 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
 
+        # checks if the inputted passwords match
         if password != confirm_password:
             messages.error(request, 'Passwords do not match.')
             return render(request, 'register.html')
 
+        # check if the inputted username exists
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
+        # check if the inputted email exists
         elif User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists.')
+        # creates the User object
         else:
             user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
             user.save()
