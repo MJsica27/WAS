@@ -47,3 +47,15 @@ h1 {
   background-color: #706F69;
   box-shadow: 3px 3px rgba(16, 16, 16, 0.1);
 }
+
+.signin-link {
+  text-align: center;  
+}
+
+.signin-link p {
+  font-size: 14px;  
+}
+
+.signin-link a {
+  font-weight: bold;  
+}
