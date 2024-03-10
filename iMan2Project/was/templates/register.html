@@ -9,7 +9,7 @@
 </head>
 <body>
     <form method="POST" action="{% url 'register' %}">
-        <h1>Register</h1>
+        <h2 class="form-line">Register</h2>
         {% csrf_token %}
 
         {% if messages %}
