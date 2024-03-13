@@ -11,14 +11,14 @@
     <div class="header">
         <h1>Wildcat Academic Sync</h1>
     </div>
-   
+
     <form method="post" action="{% url 'login' %}">
         <h2 class="form-line">Login</h2>
         {% csrf_token %}
 
         {% if messages %}
             {% for message in messages %}
-                {% if message.tags == 'error' %}    
+                {% if message.tags == 'error' %}
                     <p style="color: rgb(255, 44, 76); font-size: 15px; text-align: center">{{ message }}</p>
                 {% endif %}
                 {% if message.tags == 'success' %}
@@ -38,7 +38,7 @@
             <input type="submit" value="Login" class="square-button">
         </div>
         <div class="signin-link">
-            <p>Don't have an account?<a href="{% url 'register' %}">Sign Up</a></p>
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
         </div>
     </form>
 

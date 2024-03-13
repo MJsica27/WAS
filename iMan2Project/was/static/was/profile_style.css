@@ -14,6 +14,7 @@ header {
     padding: 60px;
     color: white;
     border-bottom: 3px solid #1b1b1b;
+    background: linear-gradient(to bottom, #212121, #111111);
 }
 
 .main-section {
@@ -29,17 +30,42 @@ header {
 }
 
 .profile-content {
-    flex: 3;
-    background-color: #EFEFEF;
-    padding: 35px;
-    position: relative;
+  flex: 3;
+  padding: 35px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f8f8;
+  z-index: -2;
+}
+
+.profile-content::after {
+  content: '';
+  background-image: url('../was/wildcats_logo_black.png'), url('../was/wildcats_logo_black.png');
+  background-size: 50% auto, 50% auto;
+  background-position: -373px 0px, 1150px 0px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.025;
 }
 
 .left-bar {
     flex: 0.10;
-    background: #f5dc60;
     padding: 20px;
-    border-right: 3px solid #f1d879;
+    background: linear-gradient(to right, #f5dc60, #f5e077);
 }
 
 .button-container {
@@ -63,6 +89,7 @@ header {
     width: 175px;
     height: 40px;
     margin-right: 10px;
+    border-radius: 5px;
 }
 
 .square-edit-button {
@@ -77,83 +104,11 @@ header {
     height: 30px;
     width: 50px;
     float: right;
+    border-radius: 5px;
 }
 
 .square-button:hover, .square-edit-button:hover {
     background-color: #706F69;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    opacity: 0;
-}
-
-.modal.show {
-    display: block;
-    opacity: 1;
-    animation: fadein 0.2s;
-}
-
-.modal-content {
-    background-color: #E3E7EE;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid #888;
-    width: 25%;
-    box-shadow: 5px 5px rgba(16, 16, 16, 0.1);
-}
-
-.modal-header {
-    background-color: #212121;
-    padding: 20px;
-    color: white;
-    text-align: center;
-}
-
-.modal-body {
-    text-align: center;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    padding-bottom: 20px;
-}
-
-.modal-button {
-    background-color: #212121;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-.modal-button:hover {
-    background-color: #706F69;
-}
-
-#deleteAccountModal, #editAccountDetailsModal, #editEmailAddressModal, #editPersonalInformationModal, #changePasswordModal {
-    display: none;
-}
-
-#deleteAccountModal.show, #editAccountDetailsModal.show, #editEmailAddressModal.show, #editPersonalInformationModal.show, #changePasswordModal.show {
-    display: block;
-    animation: fadein 0.2s;
 }
 
 .profile-container {

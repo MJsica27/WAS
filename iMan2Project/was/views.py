@@ -20,7 +20,7 @@ def user_login(request):
                 login(request, user)
                 return redirect('profile')
             else:
-                messages.error(request, 'Invalid username or password.')
+                messages.error(request, 'Invalid username or password')
 
     return render(request, 'login.html')
 
@@ -51,7 +51,7 @@ def register(request):
             user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name,
                                             last_name=last_name)
             user.save()
-            messages.success(request, 'Registration successful.')
+            messages.success(request, 'Registration successful')
             return redirect('login')
 
     return render(request, 'register.html')
@@ -169,6 +169,7 @@ def delete_account(request):
         else:
             request.user.delete()
             logout(request)
+            messages.success(request, 'Account successfully deleted')
             return redirect('login')
 
     return redirect('profile')
