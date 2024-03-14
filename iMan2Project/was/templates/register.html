@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="{% static 'was/login_register_style.css' %}">
 </head>
 <body>
-    <div class="header">
-        <h1>Wildcat Academic Sync</h1>
-    </div>
-
     <form method="POST" action="{% url 'register' %}">
         <h2 class="form-line">Register</h2>
         {% csrf_token %}
