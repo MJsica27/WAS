@@ -26,40 +26,40 @@
                 <h1 style="margin-bottom: 15px;  display: inline-block;">Account Details:</h1>
                 <button id="editAccountDetailsButton" class="square-edit-button">Edit</button>
 
-                <p style="margin-bottom: 5px">
+                <div style="margin-bottom: 5px">
                     <h5 style="margin-bottom: 7px; color: #505050">Username:</h5>
                     {{ user.username }}
-                </p>
+                </div>
             </div>
 
             <div class="profile-container" style="margin-bottom: 25px">
                 <h1 style="margin-bottom: 15px; display: inline-block">Email Address:</h1>
                 <button id="editEmailAddressButton" class="square-edit-button">Edit</button>
 
-                <p style="margin-bottom: 5px">
+                <div style="margin-bottom: 5px">
                     <h5 style="margin-bottom: 7px; color: #505050">Email Address:</h5>
                     {{ user.email}}
-                </p>
+                </div>
             </div>
 
             <div class="profile-container" style="margin-bottom: 35px">
                 <h1 style="margin-bottom: 15px; display: inline-block">Personal Information:</h1>
                 <button id="editProfileInformationButton" class="square-edit-button">Edit</button>
 
-                <p style="margin-bottom: 5px">
+                <div style="margin-bottom: 5px">
                     <h5 style="margin-bottom: 7px; color: #505050">First Name:</h5>
                     {{ user.first_name }}
-                </p>
+                </div>
 
-                <!-- <p style="margin-bottom: 5px">
+                <!-- <div style="margin-bottom: 5px">
                     <strong>Middle Initial:</strong>
                     {{ user.middle_initial }}
-                </p> -->
+                </div> -->
 
-                <p style="margin-bottom: 15px">
+                <div style="margin-bottom: 15px">
                     <h5 style="margin-bottom: 7px; color: #505050">Last Name:</h5>
                     {{ user.last_name }}
-                </p>
+                </div>
             </div>
 
              <div class="button-container">
@@ -73,15 +73,16 @@
 </section>
 
 {% if messages %}
-    {% for message in messages %}
-        <div id="snackbar">
-        {% if message.tags == 'error' %}
-            <span style="color: indianred">X</span> {{ message }}</div>
-        {% endif %}
-        {% if message.tags == 'success' %}
-            <span style="color: darkseagreen">✔</span> {{ message }}</div>
-        {% endif %}
-    {% endfor %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endif %}
 
 <script>
