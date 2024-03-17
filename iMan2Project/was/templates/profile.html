@@ -4,15 +4,18 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'was/style.css' %}">
-    <link rel="stylesheet" href="{% static 'was/profile_style.css' %}">
-    <title>My Profile</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/profile_style.css' %}">
+    <title>My Profile | WAS</title>
 </head>
+
 <body>
 <section class="main-section">
     <header>
 
     </header>
+
     <section class="profile-section">
         <div class="left-bar">
         </div>
@@ -51,16 +54,13 @@
                     {{ user.first_name }}
                 </div>
 
-                <!-- <div style="margin-bottom: 5px">
-                    <strong>Middle Initial:</strong>
-                    {{ user.middle_initial }}
-                </div> -->
-
                 <div style="margin-bottom: 15px">
                     <h5 style="margin-bottom: 7px; color: #505050">Last Name:</h5>
                     {{ user.last_name }}
                 </div>
             </div>
+
+            <br>
 
              <div class="button-container">
                  <button id="changePasswordButton" class="square-button">Change Password</button>
@@ -72,53 +72,62 @@
     </section>
 </section>
 
-{% if messages %}
-    <div id="snackbar">
-        {% for message in messages %}
-            {% if message.tags == 'error' %}
-                <span style="color: indianred">X</span> {{ message }}
-            {% endif %}
-            {% if message.tags == 'success' %}
-                <span style="color: darkseagreen">✔</span> {{ message }}
-            {% endif %}
-        {% endfor %}
-    </div>
-{% endif %}
-
-<script>
-    function myFunction() {
-        const x = document.getElementById("snackbar");
-        x.classList.add("show");
-        setTimeout(function() { x.classList.remove("show"); }, 3000);
-    }
-
-    window.onload = function() {
-        myFunction();
-    };
-</script>
-
 <div id="deleteAccountModal" class="modal">
     <div class="modal-content">
 
         <div class="modal-header">
-            <h2>Confirm Delete Account?</h2>
+            <h2>Confirm Delete Account?
+
+            </h2>
         </div>
 
         <br>
 
         <form method="post" action="{% url 'delete_account' %}">
             <div style="text-align: center">
-                <label for="password">Enter Password:</label>
-                <input type="text" id="password" name="password" required>
+                <div class="password-container">
+                    <label for="password">Enter Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <img alt="show password" src="{% static 'was/icons/hide_password.ico'%}" id="password-icon" class="password-icon" onclick="togglePasswordVisibility()">
+                </div>
             </div>
             <div class="modal-buttons">
                 {% csrf_token %}
-                <button class="modal-button">Yes</button>
+                <button type="submit" class="modal-button">Yes</button>
 
 
-                <button class="modal-button" onclick="closeDeleteAccountModal()">No</button>
+                <button type="button" class="modal-button" onclick="closeDeleteAccountModal()">No</button>
             </div>
         </form>
+    </div>
+</div>
+
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Change Password</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'change_password' %}">
+            <div style="text-align: center">
+                    <label for="old_password" style="display: inline-block; width: 200px; text-align: right">Old Password:</label>
+                    <input type="password" style="margin-bottom: 10px" id="old_password" name="old_password" required>
+                    <label for="new_password" style="display: inline-block; width: 200px; text-align: right">New Password:</label>
+                    <input type="password" style="margin-bottom: 10px" id="new_password" name="new_password" required>
+                    <label for="confirm_new_password" style="display: inline-block; width: 200px; text-align: right">Confirm New Password:</label>
+                    <input type="password" id="confirm_new_password" name="confirm_new_password" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeChangePasswordModal()">Cancel</button>
+            </div>
+        </form>
+
     </div>
 </div>
 
@@ -132,7 +141,7 @@
         <div class="modal-buttons">
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button class="modal-button">Yes</button>
+                <button type="submit"  class="modal-button">Yes</button>
             </form>
 
             <button class="modal-button" onclick="closeLogoutModal()">No</button>
@@ -158,7 +167,7 @@
 
             <div class="modal-buttons">
                 {% csrf_token %}
-                <button class="modal-button">Confirm</button>
+                <button type="submit" class="modal-button">Confirm</button>
                 <button type="button" class="modal-button" onclick="closeEditAccountDetailsModal()">Cancel</button>
             </div>
         </form>
@@ -183,7 +192,7 @@
 
             <div class="modal-buttons">
                 {% csrf_token %}
-                <button class="modal-button">Confirm</button>
+                <button type="submit"  class="modal-button">Confirm</button>
                 <button type="button" class="modal-button" onclick="closeEditEmailAddressModal()">Cancel</button>
             </div>
         </form>
@@ -219,125 +228,22 @@
     </div>
 </div>
 
-<div id="changePasswordModal" class="modal">
-    <div class="modal-content">
-
-        <div class="modal-header">
-            <h2>Change Password</h2>
-        </div>
-
-        <br>
-
-        <form method="post" action="{% url 'change_password' %}">
-            <div style="text-align: center">
-                <label for="old_password" style="display: inline-block; width: 200px; text-align: right">Old Password:</label>
-                <input type="text" style="margin-bottom: 10px" id="old_password" name="old_password" required>
-                <br>
-                <label for="new_password" style="display: inline-block; width: 200px; text-align: right">New Password:</label>
-                <input type="text" style="margin-bottom: 10px" id="new_password" name="new_password" required>
-                <br>
-                <label for="confirm_new_password" style="display: inline-block; width: 200px; text-align: right">Confirm New Password:</label>
-                <input type="text" id="confirm_new_password" name="confirm_new_password" required>
-            </div>
-
-            <div class="modal-buttons">
-                {% csrf_token %}
-                <button class="modal-button">Confirm</button>
-                <button type="button" class="modal-button" onclick="closeChangePasswordModal()">Cancel</button>
-            </div>
-        </form>
-
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
     </div>
-</div>
-
-<script>
-    const deleteAccountModal = document.getElementById("deleteAccountModal");
-    const deleteAccountBtn = document.getElementById("deleteAccountButton");
-
-    deleteAccountBtn.onclick = function() {
-        deleteAccountModal.classList.add("show");
-    }
-
-    function closeDeleteAccountModal() {
-        deleteAccountModal.classList.remove("show");
-    }
-
-    const logoutModal = document.getElementById("logoutModal");
-    const logoutBtn = document.getElementById("logoutButton");
-
-    logoutBtn.onclick = function() {
-        logoutModal.classList.add("show");
-    }
-
-    function closeLogoutModal() {
-        logoutModal.classList.remove("show");
-    }
-
-    const editAccountDetailsModal = document.getElementById("editAccountDetailsModal");
-    const editAccountDetailsBtn = document.getElementById("editAccountDetailsButton");
-
-    editAccountDetailsBtn.onclick = function() {
-        editAccountDetailsModal.classList.add("show");
-    }
-
-    function closeEditAccountDetailsModal() {
-        editAccountDetailsModal.classList.remove("show");
-    }
-
-    const editEmailAddressModal = document.getElementById("editEmailAddressModal");
-    const editEmailAddressBtn = document.getElementById("editEmailAddressButton");
-
-    editEmailAddressBtn.onclick = function() {
-        editEmailAddressModal.classList.add("show");
-    }
-
-    function closeEditEmailAddressModal() {
-        editEmailAddressModal.classList.remove("show");
-    }
-
-    const editPersonalInformationModal = document.getElementById("editPersonalInformationModal");
-    const editPersonalInformationBtn = document.getElementById("editProfileInformationButton");
-
-    editPersonalInformationBtn.onclick = function() {
-        editPersonalInformationModal.classList.add("show");
-    }
-
-    function closeEditPersonalInformationModal() {
-        editPersonalInformationModal.classList.remove("show");
-    }
-
-    const changePasswordModal = document.getElementById("changePasswordModal");
-    const changePasswordBtn = document.getElementById("changePasswordButton");
-
-    changePasswordBtn.onclick = function() {
-        changePasswordModal.classList.add("show");
-    }
-
-    function closeChangePasswordModal() {
-        changePasswordModal.classList.remove("show");
-    }
-
-    window.onclick = function(event) {
-        if (event.target === logoutModal) {
-            closeLogoutModal();
-        }
-        if (event.target === deleteAccountModal) {
-            closeDeleteAccountModal();
-        }
-        if (event.target === editAccountDetailsModal) {
-            closeEditAccountDetailsModal();
-        }
-        if (event.target === editEmailAddressModal) {
-            closeEditEmailAddressModal();
-        }
-        if (event.target === editPersonalInformationModal) {
-            closeEditPersonalInformationModal();
-        }
-        if (event.target === changePasswordModal) {
-            closeChangePasswordModal();
-        }
-    }
-</script>
+{% endif %}
 
 </body>
 </html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/profile_modals.js' %}"></script>
+<script src="{% static 'was/js/hide_show_password.js' %}"></script>

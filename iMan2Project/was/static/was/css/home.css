@@ -1,0 +1,59 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  height: 100%;
+  background-color: #f5dc60;
+  position: relative;
+  color: #ffffff;
+  font-size: 25px;
+  background-image: url('../images/wildcats_logo_black.png'), url('../images/wildcats_logo_black.png');
+  background-size: 50% auto, 50% auto;
+  background-repeat: no-repeat;
+  background-position: -388px 0, 1350px 0;
+}
+
+.middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: fadein 0.2s;
+}
+
+hr {
+  margin: auto;
+  width: 80%;
+  border: 0;
+  border-top: 5px solid white;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  background-color: #212121;
+  color: white;
+  padding: 10px 0;
+  width: 150px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.button:last-child {
+  margin-right: 0;
+}
+
+.button:hover {
+  background-color: #706F69;
+}

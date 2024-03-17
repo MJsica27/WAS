@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>About Us | WAS</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico' %}">
+  <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'was/css/about.css' %}">
+</head>
+<body>
+  <div class="about-section">
+    <h1>About Us</h1>
+    <hr>
+    <p><strong>We are three IT students from CIT-U who share one goal: We Aim for Success!</strong></p>
+  </div>
+  <br>
+  <div class="row">
+    <div class="column">
+      <div class="card">
+        <img src="{% static 'was/images/wildcats_logo_black_bottom_right.png' %}" alt="Logo" class="logo" style="pointer-events: none">
+        <img src="{% static 'was/images/bonandreinajarro.png' %}" alt="Bon Andrei" class="member-image" style="width:100%; pointer-events: none">
+        <div class="container">
+          <h2>Bon Andrei M. Najarro</h2>
+          <p class="title">Student</p>
+          <p><i>"Insert sentence long quote here"</i></p>
+          <p>bonandrei.najarro@cit.edu</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="card">
+        <img src="{% static 'was/images/wildcats_logo_black_bottom_right.png' %}" alt="Logo" class="logo" style="pointer-events: none">
+        <img src="{% static 'was/images/maryjessicatejero.png' %}" alt="Mary Jessica" class="member-image" style="width:100%; pointer-events: none">
+        <div class="container">
+          <h2>Mary Jessica C. Tejero</h2>
+          <p class="title">Student</p>
+          <p><i>"Insert sentence long quote here"</i></p>
+          <p>maryjessica.tejero@cit.edu</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="card">
+        <img src="{% static 'was/images/wildcats_logo_black_bottom_right.png' %}" alt="Logo" class="logo" style="pointer-events: none">
+        <img src="{% static 'was/images/kylematthewquitco.png' %}" alt="Kyle Matthew" class="member-image" style="width:100%; pointer-events: none">
+        <div class="container">
+          <h2>Kyle Matthew M. Quitco</h2>
+          <p class="title">Student</p>
+          <p><i>"Insert sentence long quote here"</i></p>
+          <p>kylematthew.quitco@cit.edu</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <br>
+    <a href="{% url 'home' %}" class="button">Go Back</a>
+  </div>
+</body>
+</html>

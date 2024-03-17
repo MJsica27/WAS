@@ -5,10 +5,10 @@ body {
   align-items: center;
   background-color: #f5dc60;
   height: 100vh;
-  background-image: url('../was/wildcats_logo_black.png'), url('../was/wildcats_logo_black.png');
+  background-image: url('../images/wildcats_logo_black.png'), url('../images/wildcats_logo_black.png');
   background-size: 50% auto, 50% auto;
   background-repeat: no-repeat;
-  background-position: -373px 0px, 1150px 0px;
+  background-position: -388px 0, 1350px 0;
 }
 
 
@@ -35,8 +35,7 @@ form {
 
 
 .form-line {
-  margin: 0;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
   text-align: center;
 }
 
@@ -82,6 +81,7 @@ form {
   height: 40px;
   margin-top: 25px;
   border-radius: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .square-button:hover {
@@ -100,4 +100,35 @@ form {
 
 .signin-link a {
   font-weight: bold;  
+}
+
+.password-container{
+  display: inline-block;
+  position: relative;
+}
+
+.password-container input{
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.password-container .password-icon{
+  position: absolute;
+  top: 27px;
+  right: 10px;
+  width: 20px;
+  cursor: pointer;
+  opacity: 0.25;
+  display: none;
+}
+
+.password-container .confirm-password-icon{
+  position: absolute;
+  top: 27px;
+  right: 10px;
+  width: 20px;
+  cursor: pointer;
+  opacity: 0.25;
+  display: none;
 }

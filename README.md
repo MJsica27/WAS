@@ -17,7 +17,7 @@ In WAS, We Aim for Success!
 1. Download the project by downloading the Zip file
 2. Extract it and open the project via **[VSCode](https://code.visualstudio.com/)** or **[PyCharm](https://www.jetbrains.com/pycharm/)**
 ### Clone:
-1. Clone the project by using `git clone` with [Git Bash](https://git-scm.com/downloads)
+1. Clone the project by using `git clone` with [Git Bash](https://git-scm.com/downloads):
 ```
 git clone https://github.com/MJsica27/WAS.git
 ```
@@ -29,30 +29,38 @@ git clone https://github.com/MJsica27/WAS.git
 <br>
 
 ### Activate the Virtual Environment (`activate.bat` File):
-1. Go to the **[Scripts](https://github.com/MJsica27/WAS/tree/main/venv/Scripts)** directory
+1. Go to the **[Scripts](https://github.com/MJsica27/WAS/tree/main/venv/Scripts)** directory:
 ```
 cd venv
 ```
 ```
 cd Scripts
 ```
-2. Activate the **.bat** file
+2. Activate the **.bat** file:
 ```
 .\activate.bat
 ```
 **OR**
-1. Activate the **.bat** file without changing directories
+1. Activate the **.bat** file without changing directories:
 ```
 .\venv\Scripts\activate.bat
 ```
 ### Run the Server:
-1. Open your **[Xampp](https://www.apachefriends.org/)** and start the database
-> Assuming that you already have a database named **was** and migrated
-2. Go to the **[iMan2Project](https://github.com/MJsica27/WAS/tree/main/iMan2Project)** directory
+1. Open your **[Xampp](https://www.apachefriends.org/)**.
+2. Start Apache and MySQL.
+3. Create a new database named **was**; skip this step if you already have the database:
+4. Open your terminal and go to the **[iMan2Project](https://github.com/MJsica27/WAS/tree/main/iMan2Project)** directory
 ```
 cd iMan2Project
 ```
-3. Run the server
+5. Perform migration commands to ensure that the **was** database creates/updates tables and matches the models defined in the app:
+```
+py manage.py makemigrations
+```
+```
+py manage.py migrate
+```
+6. Run the server:
 ```
 py manage.py runserver
 ```

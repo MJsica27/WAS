@@ -3,13 +3,15 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'was/style.css'%}">
-    <link rel="stylesheet" href="{% static 'was/login_register_style.css' %}">
+    <title>Login | WAS</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'was/css/login_register_style.css' %}">
 </head>
+
 <body>
     <div class="header">
-        <h1>Wildcat Academic Sync</h1>
+        <h1>WILDCATS ACADEMIC SYNC</h1>
     </div>
 
     <form method="post" action="{% url 'login' %}">
@@ -30,8 +32,12 @@
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+
+            <div class="password-container">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <img alt="show password" src="{% static 'was/icons/hide_password.ico'%}" id="password-icon" class="password-icon" onclick="togglePasswordVisibility()">
+            </div>
         </div>
 
         <div class="button-container">
@@ -44,3 +50,5 @@
 
 </body>
 </html>
+
+<script src="{% static 'was/js/hide_show_password.js' %}"></script>

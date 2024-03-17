@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Home | WAS</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'was/css/home.css'%}">
+</head>
+<body>
+
+<div class="middle">
+    <h1>WILDCATS ACADEMIC SYNC</h1>
+    <hr>
+    <p>WE AIM FOR SUCCESS</p>
+    <br>
+    <div class="button-container">
+        <a href="{% url 'login' %}" class="button">SIGN IN</a>
+        <a href="{% url 'about' %}" class="button">ABOUT US</a>
+    </div>
+</div>
+
+</body>
+</html>

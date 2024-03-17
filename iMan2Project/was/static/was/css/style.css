@@ -1,7 +1,7 @@
 body {
-    font-family: Verdana;
+    font-family: Verdana, serif;
     font-size: medium;
-    margin: 0px;
+    margin: 0;
 }
 
 
@@ -66,6 +66,7 @@ body {
     cursor: pointer;
     margin: 0 10px;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .modal-button:hover {
@@ -91,28 +92,37 @@ body {
 
 #snackbar.show {
     visibility: visible;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein-snackbar 0.5s, fadeout-snackbar 0.5s 2.5s;
 }
 
+
+@keyframes fadein-snackbar {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout-snackbar {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
 
 @keyframes fadein {
     from {
-        bottom: 0;
         opacity: 0;
     }
     to {
-        bottom: 30px;
         opacity: 1;
-    }
-}
-
-@keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
-    to {
-        bottom: 0;
-        opacity: 0;
     }
 }

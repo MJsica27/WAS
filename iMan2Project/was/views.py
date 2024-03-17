@@ -6,6 +6,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 
 
+def about(request):
+    return render(request, 'about.html')
+
+
+def home(request):
+    return render(request, 'home.html')
+
+
 def user_login(request):
     if request.user.is_authenticated:
         return redirect('profile')

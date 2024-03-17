@@ -3,10 +3,12 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <title>Register</title>
-    <link rel="stylesheet" href="{% static 'was/style.css'%}">
-    <link rel="stylesheet" href="{% static 'was/login_register_style.css' %}">
+    <title>Register | WAS</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'was/css/login_register_style.css' %}">
 </head>
+
 <body>
     <form method="POST" action="{% url 'register' %}">
         <h2 class="form-line">Register</h2>
@@ -21,18 +23,24 @@
         <div class="input-container">
             <label for="first_name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required>
-            <!-- <label for="middle_initial">Middle Initial:</label> -->
-            <!-- <input type="text" id="middle_initial" name="middle_initial"> -->
             <label for="last_name">Last Name:</label>
             <input type="text" id="last_name" name="last_name" required> <br>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <div class="password-container">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <img alt="show password" src="{% static 'was/icons/hide_password.ico'%}" id="password-icon" class="password-icon" onclick="togglePasswordVisibility()">
+            </div>
+
+            <div class="password-container">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <img alt="show password" src="{% static 'was/icons/hide_password.ico'%}" id="confirm-password-icon" class="confirm-password-icon" onclick="toggleConfirmPasswordVisibility()">
+            </div>
         </div>
         <div class="button-container">
             <input type="submit" value="Register" class="square-button">
@@ -40,8 +48,8 @@
         <div class="signin-link">
             <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
         </div>
-        
     </form>
-    
 </body>
 </html>
+
+<script src="{% static 'was/js/hide_show_password.js' %}"></script>
