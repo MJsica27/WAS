@@ -45,6 +45,15 @@ cd Scripts
 ```
 .\venv\Scripts\activate.bat
 ```
+### Install the Dependencies/Requirements:
+1. Go to the **[iMan2Project](https://github.com/MJsica27/WAS/tree/main/iMan2Project)** directory
+```
+cd iMan2Project
+```
+2. Install the dependencies/requirements by doing so:
+```
+pip install -r requirements.txt
+```
 ### Run the Server:
 1. Open your **[Xampp](https://www.apachefriends.org/)**.
 2. Start Apache and MySQL.
@@ -86,15 +95,15 @@ py manage.py runserver
 
 ### ImportError: No module named 'MySQL'
 1. Open `cmd` and run the commands
-  ```
-  pip install mysql_connector
-  ```
-  ```
-  pip install mysql
-  ```
+```
+pip install mysql_connector
+```
+```
+pip install mysql
+```
 
 ### ImportError: No module named 'Django'
 1. Open `cmd` and run the commands
-  ```
-  pip install django
-  ```
+```
+pip install django
+```
