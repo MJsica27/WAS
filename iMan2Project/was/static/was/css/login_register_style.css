@@ -1,4 +1,3 @@
-
 body {
   display: flex;
   justify-content: center;
@@ -6,10 +5,24 @@ body {
   background-color: #f5dc60;
   height: 100vh;
   background-image: url('../images/wildcats_logo_black.png'), url('../images/wildcats_logo_black.png');
-  background-size: 50% auto, 50% auto;
   background-repeat: no-repeat;
-  background-position: -388px 0, 1350px 0;
+  background-position: 50% 0, 50% 0;
+  transition: background-size 0.4s ease; /* Smooth transition effect */
 }
+
+@media (min-width: 768px) {
+  body {
+    background-size: 50% 100%, 50% 100%;
+    background-position: -50% 0, 150% 0;
+  }
+}
+
+@media (max-width: 567px) {
+  body {
+    background-image: none;
+  }
+}
+
 
 
 form {
@@ -26,12 +39,23 @@ form {
 
 .header h1 {
   position: absolute;
-  top: 50px;
+  top: 110px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
   color: snow;
+  font-size: 2rem;  
+  transition: font-size 0.3s ease;  
+  white-space: nowrap;  
+  text-align: center;  
 }
+
+@media (max-width: 567px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}
+
 
 
 .form-line {
