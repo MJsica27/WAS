@@ -7,7 +7,7 @@ body {
   background-image: url('../images/wildcats_logo_black.png'), url('../images/wildcats_logo_black.png');
   background-repeat: no-repeat;
   background-position: 50% 0, 50% 0;
-  transition: background-size 0.4s ease; /* Smooth transition effect */
+  transition: background-size 0.4s ease;  
 }
 
 @media (min-width: 768px) {

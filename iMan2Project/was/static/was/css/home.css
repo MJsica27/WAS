@@ -1,18 +1,27 @@
-body, html {
-  height: 100%;
-  margin: 0;
-}
 
 body {
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f5dc60;
-  position: relative;
-  color: #ffffff;
-  font-size: 25px;
+  height: 100vh;
   background-image: url('../images/wildcats_logo_black.png'), url('../images/wildcats_logo_black.png');
-  background-size: 50% auto, 50% auto;
   background-repeat: no-repeat;
-  background-position: -388px 0, 1350px 0;
+  background-position: 50% 0, 50% 0;
+  transition: background-size 0.4s ease;  
+}
+
+@media (min-width: 768px) {
+  body {
+    background-size: 50% 100%, 50% 100%;
+    background-position: -50% 0, 150% 0;
+  }
+}
+
+@media (max-width: 567px) {
+  body {
+    background-image: none;
+  }
 }
 
 .middle {
@@ -23,7 +32,12 @@ body {
   text-align: center;
   animation: fadein 0.2s;
 }
-
+h1, p{
+  
+  
+  color: snow;
+  
+}
 hr {
   margin: auto;
   width: 80%;
