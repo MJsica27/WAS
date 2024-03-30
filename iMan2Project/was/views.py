@@ -18,7 +18,7 @@ def home(request):
 
 def user_login(request):
     if request.user.is_authenticated:
-        return redirect('profile')
+        return redirect('courses')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -36,6 +36,8 @@ def user_login(request):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('courses')
     if request.method == 'POST':
         # acquire data from the form submission
         username = request.POST.get('username')
@@ -53,16 +55,19 @@ def register(request):
         # check if the inputted username exists
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken')
+            return render(request, 'register.html')
+
         # check if the inputted email exists
-        elif User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already taken')
+            return render(request, 'register.html')
+
         # creates the User object
-        else:
-            user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name,
-                                            last_name=last_name)
-            user.save()
-            messages.success(request, 'Registration successful')
-            return redirect('login')
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name,
+                                        last_name=last_name)
+        user.save()
+        messages.success(request, 'Registration successful')
+        return redirect('login')
 
     return render(request, 'register.html')
 
