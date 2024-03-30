@@ -67,7 +67,7 @@ cd iMan2Project
 py manage.py makemigrations
 ```
 ```
-py manage.py migrate
+py manage.py migrate           
 ```
 6. Run the server:
 ```

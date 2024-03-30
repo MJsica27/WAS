@@ -7,13 +7,14 @@
     <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
     <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/profile_style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
     <title>My Profile | WAS</title>
 </head>
 
 <body>
 <section class="main-section">
     <header>
-
+        <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
     </header>
 
     <section class="profile-section">
@@ -71,6 +72,17 @@
         </div>
     </section>
 </section>
+
+<div id="sidenav" class="sidenav">
+  <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+  <p>{{ user.username }}</p>
+  <br>
+  <hr>
+  <br>
+  <a href="{% url 'profile' %}">PROFILE</a>
+  <a href="{% url 'courses' %}">COURSES</a>
+  <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
 
 <div id="deleteAccountModal" class="modal">
     <div class="modal-content">
@@ -247,3 +259,4 @@
 <script src="{% static 'was/js/snackbar.js' %}"></script>
 <script src="{% static 'was/js/profile_modals.js' %}"></script>
 <script src="{% static 'was/js/hide_show_password.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>

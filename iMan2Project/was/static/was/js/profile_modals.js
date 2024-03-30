@@ -65,22 +65,22 @@ function closeChangePasswordModal() {
 }
 
 window.onclick = function(event) {
-    if (event.target === logoutModal) {
-        closeLogoutModal();
-    }
     if (event.target === deleteAccountModal) {
-        closeDeleteAccountModal();
+        deleteAccountModal.classList.remove("show");
+    }
+    if (event.target === logoutModal) {
+        logoutModal.classList.remove("show");
     }
     if (event.target === editAccountDetailsModal) {
-        closeEditAccountDetailsModal();
+        editAccountDetailsModal.classList.remove("show");
     }
     if (event.target === editEmailAddressModal) {
-        closeEditEmailAddressModal();
+        editEmailAddressModal.classList.remove("show");
     }
     if (event.target === editPersonalInformationModal) {
-        closeEditPersonalInformationModal();
+        editPersonalInformationModal.classList.remove("show");
     }
     if (event.target === changePasswordModal) {
-        closeChangePasswordModal();
+        changePasswordModal.classList.remove("show");
     }
 }

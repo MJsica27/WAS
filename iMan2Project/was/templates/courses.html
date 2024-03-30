@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/courses.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+    <title>Courses | WAS</title>
+</head>
+
+<body>
+<section class="main-section">
+    <header>
+        <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
+    </header>
+
+    <section class="courses-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="courses-content">
+            <h2 style="margin-bottom: 10px">Courses</h2>
+
+            <br>
+
+            <div class="courses-container" style="margin-bottom: 25px">
+                <div class="row">
+                    {% for course in user_courses %}
+                        <div class="column">
+                          <div class="card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
+                            <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Bon Andrei" class="img-placeholder" style="width:100%; pointer-events: none">
+                            <div class="container">
+                              <h2>{{ course.SubjectCode }}</h2>
+                                <div class="description"><i>{{ course.SubjectDescription }}</i></div>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                    <div class="column">
+                      <div id="addCard" class="add-card">
+                        <div class="add-container">
+                          <h2>+Add Course</h2>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</section>
+
+<div id="sidenav" class="sidenav">
+  <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+  <p>{{ user.username }}</p>
+  <br>
+  <hr>
+  <br>
+  <a href="{% url 'profile' %}">PROFILE</a>
+  <a href="{% url 'courses' %}">COURSES</a>
+  <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
+
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div id="addCourseModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Add a Course</h2>
+        </div>
+
+        <br>
+
+        <form method="post" action="{% url 'add_course' %}">
+            <div style="text-align: center">
+                    <label for="subject_code" style="display: inline-block; width: 200px; text-align: right">Subject Code:</label>
+                    <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" required>
+                    <label for="subject_description" style="display: inline-block; width: 200px; text-align: right">Subject Description:</label>
+                    <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" required>
+                    <label for="section" style="display: inline-block; width: 200px; text-align: right">Section:</label>
+                    <input type="text" style="margin-bottom: 10px"  id="section" name="section" required>
+                    <label for="professor" style="display: inline-block; width: 200px; text-align: right">Professor:</label>
+                    <input type="text" id="professor" name="professor" required>
+            </div>
+
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeAddCourseModal()">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>
+<script src="{% static 'was/js/add_course_modal.js' %}"></script>

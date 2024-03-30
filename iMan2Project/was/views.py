@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
+from django.db.models import Q, Case, When, Value, IntegerField
+from .models import Course, Schedule
 
 
 def about(request):
@@ -26,7 +28,7 @@ def user_login(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('courses')
             else:
                 messages.error(request, 'Invalid username or password')
 
@@ -70,6 +72,45 @@ def profile(request):
         return render(request, 'profile.html', {'user': request.user})
     else:
         return redirect('login')
+
+
+def courses(request):
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
+        context = {
+            'user_courses': user_courses
+        }
+        return render(request, 'courses.html', context)
+    else:
+        return redirect('login')
+
+
+def course_details(request, course_id):
+    if request.user.is_authenticated:
+        course = Course.objects.get(CourseID=course_id)
+
+        schedules = Schedule.objects.filter(CourseID=course).order_by(
+            Case(
+                When(DayOfWeek='Monday', then=Value(1)),
+                When(DayOfWeek='Tuesday', then=Value(2)),
+                When(DayOfWeek='Wednesday', then=Value(3)),
+                When(DayOfWeek='Thursday', then=Value(4)),
+                When(DayOfWeek='Friday', then=Value(5)),
+                When(DayOfWeek='Saturday', then=Value(6)),
+                When(DayOfWeek='Sunday', then=Value(7)),
+                default=Value(8),
+                output_field=IntegerField(),
+            ),
+            'StartTime',
+        )
+
+        context = {
+            'course': course,
+            'schedules': schedules,
+        }
+        return render(request, 'course_details.html', context)
+    return redirect('courses')
 
 
 def edit_username(request):
@@ -186,3 +227,95 @@ def delete_account(request):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+def add_course(request):
+    user = request.user
+
+    if request.method == 'POST':
+        subject_code = request.POST.get('subject_code')
+        subject_description = request.POST.get('subject_description')
+        section = request.POST.get('section')
+        professor = request.POST.get('professor')
+
+        if Course.objects.filter(SubjectCode=subject_code, UserID=user).exists():
+            messages.error(request, 'Course already added')
+        else:
+            course = Course.objects.create(UserID=user, SubjectCode=subject_code, SubjectDescription=subject_description, Section=section, Professor=professor)
+            course.save()
+            messages.success(request, 'Course Added')
+            return redirect('courses')
+
+    return redirect('courses')
+
+
+def edit_course(request, course_id):
+    if request.method == 'POST':
+        updated_subject_code = request.POST.get('subject_code')
+        updated_subject_description = request.POST.get('subject_description')
+        updated_section = request.POST.get('section')
+        updated_professor = request.POST.get('professor')
+
+        course = Course.objects.filter(CourseID=course_id).first()
+
+        if course:
+            if updated_subject_code != course.SubjectCode:
+                if Course.objects.filter(SubjectCode=updated_subject_code, CourseID=course_id).exclude(SubjectCode=course.SubjectCode).exists():
+                    messages.error(request, 'Subject code already taken')
+                    return redirect('course_details', course_id)
+                else:
+                    course.SubjectCode = updated_subject_code
+                    course.SubjectDescription = updated_subject_description
+                    course.Section = updated_section
+                    course.Professor = updated_professor
+                    course.save()
+                    messages.success(request, 'Course Updated')
+                    return redirect('course_details', course_id)
+            else:
+                course.SubjectDescription = updated_subject_description
+                course.Section = updated_section
+                course.Professor = updated_professor
+                course.save()
+                messages.success(request, 'Course Updated')
+                return redirect('course_details', course_id)
+        else:
+            messages.error(request, 'Course not found')
+
+    return redirect('course_details', course_id)
+
+
+def delete_course(request, course_id):
+    if request.method == 'POST':
+        course = Course.objects.get(CourseID=course_id)
+        course.delete()
+        messages.success(request, '')
+        return redirect('courses')
+    return redirect('courses')
+
+
+def add_schedule(request, course_id):
+    course = Course.objects.get(CourseID=course_id)
+
+    if request.method == 'POST':
+        day_of_week = request.POST.get('day_of_week')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        room = request.POST.get('room')
+
+        if Schedule.objects.filter(Q(CourseID=course) & Q(DayOfWeek=day_of_week) & (
+                Q(StartTime__range=(start_time, end_time)) | Q(EndTime__range=(start_time, end_time)))).exists():
+            messages.error(request, 'Schedule overlaps with existing schedule')
+        else:
+            schedule = Schedule.objects.create(CourseID=course, DayOfWeek=day_of_week, StartTime=start_time, EndTime=end_time, Room=room)
+            schedule.save()
+            messages.success(request, 'Schedule added')
+    return redirect('course_details', course_id)
+
+
+def delete_schedule(request, course_id, schedule_id):
+    if request.method == 'POST':
+        schedule = Schedule.objects.get(ScheduleID=schedule_id)
+        schedule.delete()
+        messages.success(request, '')
+        return redirect('course_details', course_id)
+    return redirect('course_details', course_id)

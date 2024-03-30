@@ -10,7 +10,7 @@ html, body {
 }
 
 header {
-    padding: 60px;
+    padding: 35px;
     color: white;
     border-bottom: 3px solid #1b1b1b;
     background: #212121 linear-gradient(to bottom, #212121, #111111);

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_details.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+    <title>{{ course.SubjectCode }} | WAS</title>
+</head>
+
+<body>
+<section class="main-section">
+    <header>
+        <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
+    </header>
+
+    <section class="details-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="details-content">
+            <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
+
+            <br>
+            <div class="navbar">
+                <a class="active" href="#">Details</a>
+                <a href="#">Tasks</a>
+                <a href="#">Grades</a>
+            </div>
+            <div class="details-container" style="margin-bottom: 25px">
+                <h1 style="margin-bottom: 15px; display: inline-block">Subject Information:</h1>
+                <button id="deleteCourseButton" class="square-delete-button">Delete</button>
+                <button id="editCourseButton" class="square-edit-button">Edit</button>
+
+                <div style="margin-bottom: 15px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Subject Code:</h5>
+                    {{ course.SubjectCode }}
+                </div>
+
+                <div style="margin-bottom: 15px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Subject Description:</h5>
+                    {{ course.SubjectDescription }}
+                </div>
+
+                <div style="margin-bottom: 15px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Class Section:</h5>
+                    {{ course.Section }}
+                </div>
+
+                <div style="margin-bottom: 15px">
+                    <h5 style="margin-bottom: 7px; color: #505050">Professor</h5>
+                    {{ course.Professor }}
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <h1 style="margin-bottom: 15px; display: inline-block">Schedule:</h1>
+                <button id="addScheduleButton" class="square-add-sched-button">Add Schedule</button>
+
+                <div style="margin-bottom: 15px">
+                    {% for schedule in schedules %}
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li style="margin-bottom: 10px; margin-top: 15px; display: flex; align-items: center;">
+                                <div style="flex-grow: 1;">
+                                    <span style="margin-right: 10px; font-weight: bold;"> - {{ schedule.DayOfWeek|capfirst }}s</span> |
+                                    <span style="margin-right: 10px; font-weight: bold;">{{ schedule.StartTime|time:"h:i A" }}</span>-
+                                    <span style="margin-right: 10px; font-weight: bold;">{{ schedule.EndTime|time:"h:i A" }}</span> |
+                                    <span>Room: {{ schedule.Room|default:"Unspecified" }}</span>
+                                </div>
+                                <form action="{% url 'delete_schedule' course.CourseID schedule.ScheduleID %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" id="deleteScheduleButton" class="square-delete-schedule-button">X</button>
+                                </form>
+                            </li>
+                        </ul>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<div id="sidenav" class="sidenav">
+    <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+    <p>{{ user.username }}</p>
+    <br>
+    <hr>
+    <br>
+    <a href="{% url 'profile' %}">PROFILE</a>
+    <a href="{% url 'courses' %}">COURSES</a>
+    <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
+
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div id="editCourseModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add a Course</h2>
+        </div>
+        <br>
+        <form method="post" action="{% url 'edit_course' course.CourseID %}">
+            <div style="text-align: center">
+                <label for="subject_code" style="display: inline-block; width: 200px; text-align: right">Subject Code:</label>
+                <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" required>
+                <label for="subject_description" style="display: inline-block; width: 200px; text-align: right">Subject Description:</label>
+                <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" required>
+                <label for="section" style="display: inline-block; width: 200px; text-align: right">Section:</label>
+                <input type="text" style="margin-bottom: 10px"  id="section" name="section" required>
+                <label for="professor" style="display: inline-block; width: 200px; text-align: right">Professor:</label>
+                <input type="text" id="professor" name="professor" required>
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditCourseModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="deleteCourseModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete Course?</h2>
+        </div>
+        <br>
+        <form method="post" action="{% url 'delete_course' course.CourseID %}">
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button type="submit" class="modal-button">Yes</button>
+                <button type="button" class="modal-button" onclick="closeDeleteCourseModal()">No</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="addScheduleModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add a Schedule</h2>
+        </div>
+        <br>
+        <form method="post" action="{% url 'add_schedule' course.CourseID %}">
+            <div style="text-align: center;">
+                <div style="display: inline-block; margin-bottom: 10px; text-align: right;">
+                    <label for="day_of_week" style="display: inline-block; width: 125px;">Day of Week:</label>
+                    <select id="day_of_week" name="day_of_week" required>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
+                </div>
+                <div style="display: inline-block; margin-bottom: 10px; text-align: right;">
+                    <label for="room" style="display: inline-block; width: 100px;">Room:</label>
+                    <input type="text" name="room" id="room" list="roomList" placeholder="Enter Room" required>
+                    <datalist id="roomList">
+                        <option value="Online">
+                        <option value="Async">
+                    </datalist>
+                </div>
+                <div style="margin-bottom: 10px; text-align: center;">
+                    <label for="start_time" style="width: 100px;">Start Time:</label>
+                    <input type="time" id="start_time" name="start_time" required>
+                </div>
+                <div style="margin-bottom: 10px; text-align: center;">
+                    <label for="end_time" style="width: 100px;">End Time:</label>
+                    <input type="time" id="end_time" name="end_time" required>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeAddScheduleModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>
+<script src="{% static 'was/js/course_details_modals.js' %}"></script>
