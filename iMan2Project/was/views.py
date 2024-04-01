@@ -307,7 +307,11 @@ def add_schedule(request, course_id):
         end_time = request.POST.get('end_time')
         room = request.POST.get('room')
 
-        if Schedule.objects.filter(Q(CourseID=course) & Q(DayOfWeek=day_of_week) & (
+        if Schedule.objects.filter(Q(DayOfWeek=day_of_week) & Q(Room=room) & (
+                Q(StartTime=start_time) | Q(EndTime=end_time) |
+                Q(StartTime__lte=start_time, EndTime__gte=end_time))).exists():
+            messages.error(request, 'Schedule overlaps with existing schedule')
+        elif Schedule.objects.filter(Q(CourseID=course) & Q(DayOfWeek=day_of_week) & (
                 Q(StartTime__range=(start_time, end_time)) | Q(EndTime__range=(start_time, end_time)))).exists():
             messages.error(request, 'Schedule overlaps with existing schedule')
         else:
