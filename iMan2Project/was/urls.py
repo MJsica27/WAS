@@ -19,6 +19,13 @@ urlpatterns = [
     path('courses/<int:course_id>/details/delete_course', views.delete_course, name='delete_course'),
     path('courses/<int:course_id>/details/add_schedule', views.add_schedule, name='add_schedule'),
     path('courses/<int:course_id>/details/<int:schedule_id>/delete_schedule', views.delete_schedule, name='delete_schedule'),
+    path('courses/<int:course_id>/tasks', views.course_tasks, name='course_tasks'),
+    path('courses/<int:course_id>/tasks/<int:task_id>/view', views.view_selected_task, name='view_selected_task'),
+    path('courses/<int:course_id>/tasks/add_task', views.add_task, name='add_task'),
+    path('courses/<int:course_id>/tasks/<int:task_id>/view/edit_task', views.edit_selected_task, name='edit_selected_task'),
+    path('courses/<int:course_id>/tasks/<int:task_id>/view/complete_task', views.complete_task, name='complete_task'),
+    path('courses/<int:course_id>/tasks/<int:task_id>/view/delete_task', views.delete_task, name='delete_task'),
+    path('courses/<int:course_id>/tasks/<int:task_id>/view/update_score', views.update_task_score, name='update_task_score'),
     path('delete_account/', views.delete_account, name='delete_account'),
     path('logout/', views.logout_user, name='logout'),
 ]

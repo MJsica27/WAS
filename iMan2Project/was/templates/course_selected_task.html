@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+  <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
+  <link rel="stylesheet" href="{% static 'was/css/course_tasks.css' %}">
+  <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+  <title>{{ course.SubjectCode }} | WAS</title>
+</head>
+<body>
+  <section class="main-section">
+    <header>
+      <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
+    </header>
+
+    <section class="details-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="details-content">
+          <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
+
+          <br>
+          <div class="navbar">
+            <a href="{% url 'course_details' course.CourseID %}">Details</a>
+            <a class="active" href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
+            <a href="">Grades</a>
+          </div>
+          <div class="tasks-container" style="margin-bottom: 25px">
+            <div>
+              <a href="{% url 'course_tasks' course.CourseID %}" class="back">
+                <span style="font-size: xx-large; margin-right: 10px;">&#8678;</span>
+                <span style="padding-top: 2px;">Back to Tasks List</span>
+              </a>
+            </div>
+            <hr style="margin: 25px 0px 25px 0px">
+            <div class="task-content">
+              <p style="font-weight: bold;">Title: <span style="color:rgb(201, 171, 0)">{{ task.Title }}</span></p>
+              <p>Task Type: <span style="color:rgb(201, 171, 0)">{{ task.Type }}</span></p><br>
+              {% if task.isComplete %}
+                <p>Status: <span style="color: seagreen; font-weight: bold;">Complete</span></p>
+                {% if task.Score != -1 %}
+                  <p>Score: <span style="color:rgb(201, 171, 0)">{{ task.Score }} / {{ task.Score_over }}</p>
+                {% endif %}
+              {% else %}
+                <p>Status: <span style="color:indianred; font-weight: bold;">Pending</span></p>
+              {% endif %}
+              <br>
+              <p>Deadline of Task: <span style="color:rgb(201, 171, 0)">{{ task.Deadline }}</span></p><br>
+              <p>{{ task.Description }}</p>
+            </div>
+            <hr style="margin: 25px 0px 25px 0px">
+            <div class="tasks-list-inputs">
+              <button type="button" id="btnEditTask" class="square-add-task-button">Edit</button>
+              {% if task.isComplete %}
+                <button type="button" id="btnCompleteTask" class="square-add-task-button" style="width:150px">Undo Complete</button>
+                {% if task.Score == -1 %}
+                  <button type="button" id="btnUpdateTaskScore" class="square-add-task-button">Add Score</button>
+                {% else %}
+                  <button type="button" id="btnDeleteTaskScore" class="square-add-task-button" style="width:120px">Delete Score</button>
+                {% endif %}
+              {% else %}
+                <button type="button" id="btnCompleteTask" class="square-add-task-button" >Complete</button>
+              {% endif %}
+              <button type="button" id="btnDeleteTask" class="square-add-task-button" style="width:120px">Delete Task</button>
+            </div>
+          </div>
+            
+        </div>
+    </section>
+</section>
+
+<div id="sidenav" class="sidenav">
+    <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+    <p>{{ user.username }}</p>
+    <br>
+    <hr>
+    <br>
+    <a href="{% url 'profile' %}">PROFILE</a>
+    <a href="{% url 'courses' %}">COURSES</a>
+    <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
+
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div id="editTaskModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit</h2>
+    </div> 
+    <br>
+    <form method="POST" action="{% url 'edit_selected_task' course.CourseID task.TaskID %}">
+      <div class="task-input-container">
+        <div class="task-input">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" class="task-input" required value="{{task.Title}}">
+        </div>
+        <div class="task-input">
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" class="task-input" rows="5" required>{{ task.Description }}</textarea>
+        </div>
+        <div class="task-input">
+          <label for="deadline">Deadline:</label>
+          <input type="datetime-local" id="deadline" name="deadline" required value="{{task.Deadline}}">
+        </div>
+        <div class="task-input">
+          <label for="type">Type:</label>
+          <input type="text" id="type" name="type" required value="{{task.Type}}">
+        </div>
+        {% if task.isComplete and task.Score >= 0 %}
+          <br>
+          <div class="task-input">
+            <label for="score">Score:</label>
+            <input type="number" id="score" name="score" min=0 step=".01" required value="{{task.Score}}">
+          </div>
+          <div class="task-input">
+            <label for="score_over">Over:</label>
+            <input type="number" id="score_over" name="score_over" min=1 step=".01" required value="{{task.Score_over}}">
+          </div>
+        {% endif %}
+      </div>
+      <div class="modal-buttons">
+        {% csrf_token %}
+        <button class="modal-button">Confirm</button>
+        <button type="button" class="modal-button" onclick="closeEditTaskModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="updateTaskScoreModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Score to Task</h2>
+    </div>
+    <br>
+    <form method="post" action="{% url 'update_task_score' course.CourseID task.TaskID %}">
+      <div class="task-input-container">
+          <label for="score">Score: </label>
+          <input type="number" id="score" name="score" class="task-input" min=0 step=".01" required>
+          <label for="score_over">/ </label>
+          <input type="number" id="score_over" name="score_over" class="task-input" min=1 step=".01" required>
+      </div>
+      <div class="modal-buttons">
+        {% csrf_token %}
+        <button type="submit" class="modal-button">Confirm</button>
+        <button type="button" class="modal-button" onclick="closeUpdateTaskScoreModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="completeTaskModal" class="modal">
+  <div class="modal-content">
+      <div class="modal-header">
+        {% if task.isComplete %}
+          <h2>Mark the task as pending/incomplete?</h2>
+          <p>This will reset the score.</p>
+        {% else %}
+          <h2>Mark the task as completed?</h2>
+        {% endif %}  
+      </div>
+      <br>
+      <form method="post" action="{% url 'complete_task' course.CourseID task.TaskID %}">
+          <div class="modal-buttons">
+              {% csrf_token %}
+              <button type="submit" class="modal-button">Yes</button>
+              <button type="button" class="modal-button" onclick="closeCompleteTaskModal()">No</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+<div id="deleteTaskScoreModal" class="modal">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h2>Do you want to remove the score?</h2>
+      </div>
+      <br>
+      <form method="post" action="{% url 'update_task_score' course.CourseID task.TaskID %}">
+          <div class="modal-buttons">
+              {% csrf_token %}
+              <input type="hidden" value="1" name="delete-score">
+              <button type="submit" class="modal-button">Yes</button>
+              <button type="button" class="modal-button" onclick="closeDeleteTaskScoreModal()">No</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+<div id="deleteTaskModal" class="modal">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h2>Do you want to permanently delete task?</h2>
+      </div>
+      <br>
+      <form method="post" action="{% url 'delete_task' course.CourseID task.TaskID %}">
+          <div class="modal-buttons">
+              {% csrf_token %}
+              <button type="submit" class="modal-button">Yes</button>
+              <button type="button" class="modal-button" onclick="closeDeleteTaskModal()">No</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>
+<script src="{% static 'was/js/course_tasks_modals.js' %}"></script>

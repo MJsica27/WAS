@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
-from .models import Course, Schedule
+from .models import Course, Schedule, Task
 
 
 def about(request):
@@ -328,3 +328,152 @@ def delete_schedule(request, course_id, schedule_id):
         messages.success(request, '')
         return redirect('course_details', course_id)
     return redirect('course_details', course_id)
+
+def course_tasks(request, course_id):
+    if request.user.is_authenticated:
+        course = Course.objects.get(CourseID=course_id)
+        tasks = []
+        isComplete = False
+
+        if request.method == 'POST':
+            isComplete = request.POST.get("listShowPendingComplete") == "1"
+
+        for task in Task.objects.filter(CourseID=course, isComplete=isComplete):
+            tasks.append(task)
+            
+        context = {
+            'course': course,
+            'tasks': tasks,
+            'isComplete': isComplete,
+        }
+        return render(request, 'course_tasks.html', context)
+    return redirect('courses')
+
+def add_task(request, course_id):
+    course = Course.objects.get(CourseID=course_id)
+
+    if request.method == 'POST':
+        task_title = request.POST.get('title')
+        task_description = request.POST.get('description')
+        task_deadline = request.POST.get('deadline')
+        task_type = request.POST.get('type')
+
+        if Task.objects.filter(Title=task_title, CourseID=course).exists():
+            messages.error(request, 'Task with the same title already exists.')
+        else:
+            task = Task.objects.create(CourseID=course, Title=task_title, Description=task_description, Deadline=task_deadline, Type=task_type)
+            task.save()
+            messages.success(request, 'New Task Added')
+
+    return redirect('course_tasks', course_id)
+
+def view_selected_task(request, course_id, task_id):
+    if request.user.is_authenticated:
+        course = Course.objects.get(CourseID=course_id)
+        task = Task.objects.get(TaskID = task_id)
+
+        context = {
+            'course': course,
+            'task': task,
+        }
+        return render(request, 'course_selected_task.html', context)
+    
+    return redirect('course_tasks')
+
+def edit_selected_task(request, course_id, task_id):
+
+    if request.method == 'POST':
+        task = Task.objects.filter(TaskID=task_id).first()
+
+        new_title = request.POST.get('title')
+        new_desc = request.POST.get('description')
+        new_deadline = request.POST.get('deadline')
+        new_type = request.POST.get('type')
+        new_score = -1
+        new_score_over = -1
+        if task.isComplete:
+            new_score = request.POST.get('score')
+            new_score_over = request.POST.get('score_over')
+        
+        # task exists
+        if task: 
+            # new title is different from old title
+            if new_title != task.Title:
+                # check if the title already taken
+                if Task.objects.filter(Title=new_title, TaskID=task.TaskID):
+                    messages.error(request, 'Task Title already taken')
+                    return redirect('view_selected_task', course_id, task_id)
+                # if title is not taken
+                else:
+                    task.Title = new_title
+                
+            task.Description = new_desc
+            task.Deadline = new_deadline
+            task.Type = new_type
+            if task.isComplete:
+                if (len(new_score.replace('.','')) > 11 or len(new_score_over.replace('.','')) > 11):
+                # check if the inputted score values exceeds 11 digits
+                    messages.error(request, 'Invalid score (value is too long)')
+                    return redirect('view_selected_task', course_id, task_id)
+                else:
+                    new_score = float(new_score)
+                    new_score_over = float(new_score_over)
+                    task.Score = new_score
+                    task.Score_over = new_score_over
+            task.save()
+            messages.success(request, 'Task updated')
+        else:
+        # task does not exist
+            messages.error(request, 'Task not found')
+    return redirect('view_selected_task', course_id, task_id)
+
+def complete_task(request, course_id, task_id):
+    if request.method == 'POST':
+        task = Task.objects.filter(TaskID=task_id).first()
+
+        if task:
+            if task.isComplete:
+                task.Score = -1
+                task.Score_over = -1
+            task.isComplete = not task.isComplete
+            task.save()
+            messages.success(request, 'Task updated')
+        else:
+            messages.error(request, 'Task not found')
+
+    return redirect('view_selected_task', course_id, task_id)
+
+def update_task_score(request, course_id, task_id):
+    if request.method == 'POST':
+        task = Task.objects.filter(TaskID=task_id).first()
+
+        if request.POST.get('delete-score'):
+        # flag at course_selected_task.html for removing score
+            task.Score = -1
+            task.Score_over = -1
+            task.save()
+            messages.success(request, 'Score removed')
+        else:
+            score = request.POST.get('score')
+            score_over = request.POST.get('score_over')
+
+            if (len(score.replace('.','')) > 11 or len(score_over.replace('.','')) > 11):
+            # check if the inputted score values exceeds 11 digits
+                messages.error(request, 'Invalid score (value is too long)')
+            else:
+                score = float(score)
+                score_over = float(score_over)
+                task.Score = score
+                task.Score_over = score_over
+                task.save()
+                messages.success(request, 'Score updated')
+
+    return redirect('view_selected_task', course_id, task_id)
+
+def delete_task(request, course_id, task_id):
+    if request.method == 'POST':
+        task = Task.objects.get(TaskID=task_id)
+        title = task.Title
+        task.delete()
+        messages.success(request, "{0} successfully deleted".format(title))
+    return redirect('course_tasks', course_id)

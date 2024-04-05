@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_tasks.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+    <title>{{ course.SubjectCode }} | WAS</title>
+</head>
+
+<body>
+<section class="main-section">
+    <header>
+        <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
+    </header>
+
+    <section class="details-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="details-content">
+            <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
+
+            <br>
+            <div class="navbar">
+                <a href="{% url 'course_details' course.CourseID %}">Details</a>
+                <a class="active" href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
+                <a href="">Grades</a>
+            </div>
+            <div class="tasks-container" style="margin-bottom: 25px">
+                <div class="tasks-list">
+                    <form method="POST" action="{% url 'course_tasks' course.CourseID %}">
+                        {% csrf_token %}
+                        <label for="listShowPendingComplete" style="padding-top: 5px; margin-left: 10px; margin-right: 10px;">Show: </label>
+                        <select name="listShowPendingComplete" id="listShowPendingComplete" style="font-size: large; width: 120px;" onchange="this.form.submit()">
+                            {% if isComplete %}
+                                <option value="0">Pending</option>
+                                <option value="1" selected> Complete</option>
+                            {% else %}
+                                <option value="0" selected>Pending</option>
+                                <option value="1"> Complete</option>
+                            {% endif %}
+                            
+                        </select>
+                    </form>
+                    <hr style="margin: 25px 0px 25px 0px">
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            <a href="{% url 'view_selected_task' course.CourseID task.TaskID %}">
+                                <div id="task-card-{{ forloop.counter }}" class="task-card" >
+                                    <p id="title">&#9751;&nbsp;&nbsp;{{ task.Title }}</p>
+                                    <p id="deadline" style="margin-left: 20px; color:#5a5a5a;">Deadline: {{ task.Deadline }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p>No 
+                            {% if isComplete %}completed
+                            {% else %}pending
+                            {% endif %}
+                        tasks.</p>
+                    {% endif %}
+                </div>
+                <hr style="margin: 25px 0px 25px 0px">
+                <div class="tasks-list-inputs">
+                    <button type="button" id="btnAddTask" class="square-add-task-button">Add Task</button>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+</section>
+
+<div id="sidenav" class="sidenav">
+    <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+    <p>{{ user.username }}</p>
+    <br>
+    <hr>
+    <br>
+    <a href="{% url 'profile' %}">PROFILE</a>
+    <a href="{% url 'courses' %}">COURSES</a>
+    <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
+
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div id="addTaskModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+        <h2>Add a Task</h2>
+    </div> 
+    <br>
+    <form method="POST" action="{% url 'add_task' course.CourseID %}">
+        <div class="task-input-container">
+            <div class="task-input">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" class="task-input" required>
+            </div>
+            <div class="task-input">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="task-input" rows="5" required></textarea>
+            </div>
+            <div class="task-input">
+                <label for="deadline">Deadline:</label>
+                <input type="datetime-local" id="deadline" name="deadline" required>
+            </div>
+            <div class="task-input">
+                <label for="type">Type:</label>
+                <input type="text" id="type" name="type" required>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            {% csrf_token %}
+            <button class="modal-button">Confirm</button>
+            <button type="button" class="modal-button" onclick="closeAddTaskModal()">Cancel</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>
+<script src="{% static 'was/js/course_tasks_modals.js' %}"></script>
