@@ -32,8 +32,9 @@ class Task(models.Model):
     Description = models.CharField(max_length=255)
     Deadline = models.DateTimeField()
     Type = models.CharField(max_length=255)
-    Score = models.DecimalField(max_digits=11, decimal_places=2)
-    Status = models.CharField(max_length=255)
+    Score = models.DecimalField(max_digits=11, decimal_places=2, default=-1)
+    Score_over = models.DecimalField(max_digits=11, decimal_places=2, default=-1)
+    isComplete = models.BooleanField(default=False)
     CourseID = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 
