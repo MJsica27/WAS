@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
     <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/course_details.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
     <title>{{ course.SubjectCode }} | WAS</title>
@@ -26,9 +27,9 @@
 
             <br>
             <div class="navbar">
-                <a class="active" href="#">Details</a>
-                <a href="#">Tasks</a>
-                <a href="#">Grades</a>
+                <a class="active" href="">Details</a>
+                <a href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
+                <a href="">Grades</a>
             </div>
             <div class="details-container" style="margin-bottom: 25px">
                 <h1 style="margin-bottom: 15px; display: inline-block">Subject Information:</h1>
@@ -113,19 +114,19 @@
 <div id="editCourseModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Add a Course</h2>
+            <h2>Edit Course</h2>
         </div>
         <br>
         <form method="post" action="{% url 'edit_course' course.CourseID %}">
             <div style="text-align: center">
                 <label for="subject_code" style="display: inline-block; width: 200px; text-align: right">Subject Code:</label>
-                <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" required>
+                <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" value="{{ course.SubjectCode }}" required>
                 <label for="subject_description" style="display: inline-block; width: 200px; text-align: right">Subject Description:</label>
-                <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" required>
+                <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" value="{{ course.SubjectDescription }}" required>
                 <label for="section" style="display: inline-block; width: 200px; text-align: right">Section:</label>
-                <input type="text" style="margin-bottom: 10px"  id="section" name="section" required>
+                <input type="text" style="margin-bottom: 10px"  id="section" name="section" value="{{ course.Section }}" required>
                 <label for="professor" style="display: inline-block; width: 200px; text-align: right">Professor:</label>
-                <input type="text" id="professor" name="professor" required>
+                <input type="text" id="professor" name="professor" value="{{ course.Professor }}" required>
             </div>
             <div class="modal-buttons">
                 {% csrf_token %}
