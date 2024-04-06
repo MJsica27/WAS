@@ -14,7 +14,7 @@
   Wildcats Academic Sync or WAS is a user-friendly web application that helps students organize their academic responsibilities effortlessly. With a focus on simplicity, WAS offers the basic CRUD (Create, Read, Update, Delete) functions for managing students' courses with their respective study tasks and grades. Students can easily add, view, update, and delete information related to their studies, allowing them to stay on top of their academic journey. In WAS, We Aim for Success!
 </p>
 
-###
+<br>
 
 <!-- Project Table of Contents -->
 
@@ -24,7 +24,7 @@
 - [Project Info](#project-info)
 - [Fixes](#fixes)
 
-###
+<br>
 
 <!-- Project Installation -->
 ## Installation
@@ -39,7 +39,7 @@ git clone https://github.com/MJsica27/WAS.git
 ```
 2. Open the project via **[VSCode](https://code.visualstudio.com/)** or **[PyCharm](https://www.jetbrains.com/pycharm/)**
 
-###
+<br>
 
 <!-- Project Running -->
 
@@ -91,7 +91,7 @@ py manage.py migrate
 py manage.py runserver
 ```
 
-###
+<br>
 
 <!-- Project Info -->
 
@@ -141,7 +141,7 @@ py manage.py runserver
 #### Contributors:
   <img src = "https://contrib.rocks/image?repo=MJsica27/WAS"/>
 
-###
+<br>
 
 ## Fixes
 
