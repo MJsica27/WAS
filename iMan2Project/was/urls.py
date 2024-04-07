@@ -26,6 +26,7 @@ urlpatterns = [
     path('courses/<int:course_id>/tasks/<int:task_id>/view/complete_task', views.complete_task, name='complete_task'),
     path('courses/<int:course_id>/tasks/<int:task_id>/view/delete_task', views.delete_task, name='delete_task'),
     path('courses/<int:course_id>/tasks/<int:task_id>/view/update_score', views.update_task_score, name='update_task_score'),
+    path('courses/<int:course_id>/grade', views.course_grade, name='course_grade'),
     path('delete_account/', views.delete_account, name='delete_account'),
     path('logout/', views.logout_user, name='logout'),
 ]

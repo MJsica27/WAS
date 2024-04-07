@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
+    <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_tasks.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+    <title>{{ course.SubjectCode }} | WAS</title>
+</head>
+
+<body>
+<section class="main-section">
+    <header>
+        <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
+    </header>
+
+    <section class="details-section">
+        <div class="left-bar">
+        </div>
+
+        <div class="details-content">
+            <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
+
+            <br>
+            <div class="navbar">
+                <a href="{% url 'course_details' course.CourseID %}">Details</a>
+                <a href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
+                <a class="active" href="{% url 'course_grade' course.CourseID %}">Grades</a>
+            </div>
+            
+            
+        </div>
+    </section>
+</section>
+
+<div id="sidenav" class="sidenav">
+    <a href="#" class="sidenav-close" onclick="closeNav()">&times;</a>
+    <p>{{ user.username }}</p>
+    <br>
+    <hr>
+    <br>
+    <a href="{% url 'profile' %}">PROFILE</a>
+    <a href="{% url 'courses' %}">COURSES</a>
+    <a href="{% url 'logout' %}">LOGOUT</a>
+</div>
+
+{% if messages %}
+    <div id="snackbar">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <span style="color: indianred">X</span> {{ message }}
+            {% endif %}
+            {% if message.tags == 'success' %}
+                <span style="color: darkseagreen">✔</span> {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+</body>
+</html>
+
+<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/sidenav.js' %}"></script>
+<script src="{% static 'was/js/course_tasks_modals.js' %}"></script>

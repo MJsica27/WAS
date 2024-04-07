@@ -29,7 +29,7 @@
             <div class="navbar">
                 <a class="active" href="">Details</a>
                 <a href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
-                <a href="">Grades</a>
+                <a href="{% url 'course_grade' course.CourseID %}">Grades</a>
             </div>
             <div class="details-container" style="margin-bottom: 25px">
                 <h1 style="margin-bottom: 15px; display: inline-block">Subject Information:</h1>

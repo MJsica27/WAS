@@ -477,3 +477,13 @@ def delete_task(request, course_id, task_id):
         task.delete()
         messages.success(request, "{0} successfully deleted".format(title))
     return redirect('course_tasks', course_id)
+
+def course_grade(request, course_id):
+    if request.user.is_authenticated:
+        course = Course.objects.get(CourseID=course_id)
+            
+        context = {
+            'course': course
+        }
+        return render(request, 'course_grade.html', context)
+    return redirect('courses')
