@@ -41,11 +41,11 @@
                         <button class="addMidtermGradeBtn" id="addMidtermGradeBtn">Add Midterm Grade</button>
                     </div>  
                     {% else %}
+                        <div class="midterm_modify_container">
+                            <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
+                            <button class="deleteMidtermGradeBtn" id="deleteMidtermGradeBtn">Delete</button>
+                        </div>
                             <h3>{{ midterm_grade }}</h3>
-                            <div class="midterm_modify_container">
-                                <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
-                                <button class="deleteMidtermGradeBtn" id="deleteMidtermGradeBtn">Delete</button>
-                            </div>
                     {% endif %}
                 </div>
                 
@@ -56,11 +56,11 @@
                         <button class="addFinalGradeBtn" id="addFinalGradeBtn">Add Final Grade</button>
                     </div>
                     {% else %}
-                            <h3>{{ final_grade }}</h3>
-                            <div class="final_modify_container">
-                                <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
-                                <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
-                            </div>    
+                        <div class="final_modify_container">
+                            <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
+                            <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
+                        </div> 
+                            <h3>{{ final_grade }}</h3>  
                     {% endif %}
                 </div>
             </div>
@@ -142,13 +142,13 @@
 
 
 <!-- EDIT -->
-<!-- <div id="editMidtermGradeModal" class="modal">
+<div id="editMidtermGradeModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
           <h2>Edit Midterm Grade</h2>
       </div> 
       <br>
-      <form method="POST" action=" ">
+      <form method="POST" action="{% url 'edit_midterm_grade' course.CourseID %}">
           <div style="text-align: center">
                 <label for="add_midterm_grade" style="display: inline-block; width: 200px; text-align: right">Midterm Grade :</label>
                 <input type="number" style="margin-bottom: 10px"   name="add_midterm_grade" step="0.1" min="1" max="5" value="{{ midterm_grade }}" required>
@@ -166,10 +166,10 @@
 <div id="editFinalGradeModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-          <h2Edit Final Grade</h2>
+          <h2>Edit Final Grade</h2>
       </div> 
       <br>
-      <form method="POST" action=" ">
+      <form method="POST" action="{% url 'edit_final_grade' course.CourseID %}">
           <div style="text-align: center">
                 <label for="add_final_grade" style="display: inline-block; width: 200px; text-align: right">Final Grade:</label>
                 <input type="number" style="margin-bottom: 10px"   name="add_final_grade" step="0.1" min="1" max="5" value="{{ final_grade }}" required>
@@ -182,16 +182,16 @@
             </div>
       </form>
     </div>
-</div> -->
+</div>
 
 <!-- DELETE-->
-<!-- <div id="deleteMidtermGradeModal" class="modal">
+<div id="deleteMidtermGradeModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Confirm Delete Midterm Grade?</h2>
         </div>
         <br>
-        <form method="post" action=" ">
+        <form method="post" action="{% url 'delete_midterm_grade' course.CourseID %}">
             <div class="modal-buttons">
                 {% csrf_token %}
                 <button type="submit" class="modal-button">Yes</button>
@@ -207,7 +207,7 @@
             <h2>Confirm Delete Final Grade?</h2>
         </div>
         <br>
-        <form method="post" action=" ">
+        <form method="post" action="{% url 'delete_final_grade' course.CourseID %}">
             <div class="modal-buttons">
                 {% csrf_token %}
                 <button type="submit" class="modal-button">Yes</button>
@@ -215,7 +215,7 @@
             </div>
         </form>
     </div>
-</div> -->
+</div>
 
 </body>
 </html>

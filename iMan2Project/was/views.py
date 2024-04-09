@@ -497,18 +497,18 @@ def course_grade(request, course_id):
 
 def add_midterm_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
-
-    # check if naay grades nakabutang sa database para sa course
+ 
     grades = Grade.objects.filter(CourseID=course).first()
 
     if request.method == 'POST':
         midterm_grade = request.POST.get('add_midterm_grade')
-
-        # check if walay finals grades
+ 
         if grades is None:
             grade = Grade.objects.create(CourseID=course, MidtermGrade=midterm_grade, FinalGrade=-1)
             grade.save()
-        # check if existed ang final grades
+        elif grades.MidtermGrade == -1:
+            grades.MidtermGrade = midterm_grade
+            grades.save() 
         elif grades.FinalGrade > 0:
             grades.MidtermGrade = midterm_grade
             grades.save()
@@ -520,18 +520,18 @@ def add_midterm_grade(request, course_id):
 
 def add_final_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
-
-    # check if naay grades nakabutang sa database para sa course
+ 
     grades = Grade.objects.filter(CourseID=course).first()
 
     if request.method == 'POST':
         add_final_grade = request.POST.get('add_final_grade')
-
-        # check if walay midterm grades
+ 
         if grades is None:
             grade = Grade.objects.create(CourseID=course, MidtermGrade=-1, FinalGrade=add_final_grade)
             grade.save()
-        # check if existed ang midterm grades
+        elif grades.FinalGrade == -1:
+            grades.FinalGrade = add_final_grade
+            grades.save() 
         elif grades.MidtermGrade > 0:
             grades.FinalGrade = add_final_grade
             grades.save()
@@ -539,3 +539,59 @@ def add_final_grade(request, course_id):
         return redirect('course_grade', course_id=course_id)
 
     return render(request, 'course_grade.html', {'course': course})
+
+def edit_midterm_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        new_midterm_grade = request.POST.get('add_midterm_grade')
+
+        if grades is not None:
+            grades.MidtermGrade = new_midterm_grade
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'edit_midterm_grade.html', {'course': course, 'grades': grades})
+
+def edit_final_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        new_final_grade = request.POST.get('add_final_grade')
+
+        if grades is not None:
+            grades.FinalGrade = new_final_grade
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'edit_final_grade.html', {'course': course, 'grades': grades})
+
+def delete_midterm_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        if grades is not None:
+            grades.MidtermGrade = -1
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'delete_midterm_grade.html', {'course': course, 'grades': grades})
+
+def delete_final_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        if grades is not None:
+            grades.FinalGrade = -1
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'delete_final_grade.html', {'course': course, 'grades': grades})
