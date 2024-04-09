@@ -40,12 +40,12 @@
                     <div class="add_grade_button_container">
                         <button class="addMidtermGradeBtn" id="addMidtermGradeBtn">Add Midterm Grade</button>
                     </div>  
-                    {% else %}
-                        <div class="midterm_modify_container">
-                            <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
-                            <button class="deleteMidtermGradeBtn" id="deleteMidtermGradeBtn">Delete</button>
-                        </div>
-                            <h3>{{ midterm_grade }}</h3>
+                    {% else %} 
+                            <h1 class="display_midterm_grade">{{ midterm_grade }}</h1>
+                            <div class="midterm_modify_container">
+                                <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
+                                <button class="deleteMidtermGradeBtn" id="deleteMidtermGradeBtn">Delete</button>
+                            </div>
                     {% endif %}
                 </div>
                 
@@ -55,12 +55,12 @@
                     <div class="add_grade_button_container">
                         <button class="addFinalGradeBtn" id="addFinalGradeBtn">Add Final Grade</button>
                     </div>
-                    {% else %}
-                        <div class="final_modify_container">
-                            <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
-                            <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
-                        </div> 
-                            <h3>{{ final_grade }}</h3>  
+                    {% else %} 
+                            <h1 class="display_final_grade">{{ final_grade }}</h1> 
+                            <div class="final_modify_container">
+                                <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
+                                <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
+                            </div> 
                     {% endif %}
                 </div>
             </div>

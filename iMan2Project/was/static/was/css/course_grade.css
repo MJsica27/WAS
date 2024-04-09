@@ -14,3 +14,56 @@
     flex: 1;  
     margin-right: 20px; 
 }
+
+.midterm_modify_container, .final_modify_container {
+    margin-left: 450px;  
+}
+ 
+.display_midterm_grade,
+.display_final_grade {
+    text-align: center;
+    font-size: 54px; /* Adjust the font size as needed */
+    padding: 10px; /* Add padding for spacing */
+    
+}
+
+
+.addMidtermGradeBtn,
+.editMidtermGradeBtn,
+.deleteMidtermGradeBtn,
+.addFinalGradeBtn,
+.editFinalGradeBtn,
+.deleteFinalGradeBtn {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+ 
+.addMidtermGradeBtn, .addFinalGradeBtn {
+    background-color: #4CAF50;  
+    color: white;
+}
+
+.addMidtermGradeBtn:hover, .addFinalGradeBtn:hover {
+    background-color: #45a049; 
+}
+ 
+.editMidtermGradeBtn, .editFinalGradeBtn {
+    background-color: #008CBA;  
+    color: white;
+}
+
+.editMidtermGradeBtn:hover, .editFinalGradeBtn:hover {
+    background-color: #0073e6; 
+}
+ 
+.deleteMidtermGradeBtn, .deleteFinalGradeBtn {
+    background-color: #f44336; 
+    color: white;
+}
+
+.deleteMidtermGradeBtn:hover, .deleteFinalGradeBtn:hover {
+    background-color: #d32f2f;  
+}
