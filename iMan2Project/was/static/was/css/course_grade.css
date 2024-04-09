@@ -1,0 +1,16 @@
+.grade_container {
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: white;
+    padding: 35px;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between; 
+    min-height: 60vh;
+    max-height: 60vh;
+}
+
+.midterm_container, .final_container {
+    flex: 1;  
+    margin-right: 20px; 
+}

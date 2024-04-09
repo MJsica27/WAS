@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
-from .models import Course, Schedule, Task
+from .models import Course, Schedule, Task, Grade
 
 
 def about(request):
@@ -479,11 +479,63 @@ def delete_task(request, course_id, task_id):
     return redirect('course_tasks', course_id)
 
 def course_grade(request, course_id):
-    if request.user.is_authenticated:
-        course = Course.objects.get(CourseID=course_id)
-            
-        context = {
-            'course': course
-        }
-        return render(request, 'course_grade.html', context)
-    return redirect('courses')
+    course = Course.objects.get(pk=course_id)
+
+    try:
+        grade = Grade.objects.get(CourseID=course)
+        midterm_grade = grade.MidtermGrade
+        final_grade = grade.FinalGrade 
+    except Grade.DoesNotExist:
+        midterm_grade = -1
+        final_grade = -1 
+
+    return render(request, 'course_grade.html', {
+        'course': course,
+        'midterm_grade': midterm_grade,
+        'final_grade': final_grade
+    })
+
+def add_midterm_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+
+    # check if naay grades nakabutang sa database para sa course
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        midterm_grade = request.POST.get('add_midterm_grade')
+
+        # check if walay finals grades
+        if grades is None:
+            grade = Grade.objects.create(CourseID=course, MidtermGrade=midterm_grade, FinalGrade=-1)
+            grade.save()
+        # check if existed ang final grades
+        elif grades.FinalGrade > 0:
+            grades.MidtermGrade = midterm_grade
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'course_grade.html', {'course': course})
+
+
+def add_final_grade(request, course_id):
+    course = Course.objects.get(pk=course_id)
+
+    # check if naay grades nakabutang sa database para sa course
+    grades = Grade.objects.filter(CourseID=course).first()
+
+    if request.method == 'POST':
+        add_final_grade = request.POST.get('add_final_grade')
+
+        # check if walay midterm grades
+        if grades is None:
+            grade = Grade.objects.create(CourseID=course, MidtermGrade=-1, FinalGrade=add_final_grade)
+            grade.save()
+        # check if existed ang midterm grades
+        elif grades.MidtermGrade > 0:
+            grades.FinalGrade = add_final_grade
+            grades.save()
+
+        return redirect('course_grade', course_id=course_id)
+
+    return render(request, 'course_grade.html', {'course': course})

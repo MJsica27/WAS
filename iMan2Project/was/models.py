@@ -42,6 +42,7 @@ class Grade(models.Model):
     objects = models.Manager()
 
     GradeID = models.AutoField(primary_key=True)
-    MidtermGrade = models.DecimalField(max_digits=1, decimal_places=1)
-    FinalGrade = models.DecimalField(max_digits=1, decimal_places=1)
+    MidtermGrade = models.DecimalField(max_digits=3, decimal_places=1, default=-1)
+    FinalGrade = models.DecimalField(max_digits=3, decimal_places=1, default=-1)
     CourseID = models.ForeignKey(Course, on_delete=models.CASCADE)
+

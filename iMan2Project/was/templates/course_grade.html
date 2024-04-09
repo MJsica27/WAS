@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'was/icons/wildcats_logo_white.ico'%}">
     <link rel="stylesheet" href="{% static 'was/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
-    <link rel="stylesheet" href="{% static 'was/css/course_tasks.css' %}">
+    <link rel="stylesheet" href="{% static 'was/css/course_grade.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
     <title>{{ course.SubjectCode }} | WAS</title>
 </head>
@@ -33,6 +33,41 @@
             </div>
             
             
+            <div class="grade_container">
+                <div class="midterm_container">
+                    <h3>Midterm Grade: </h3>
+                    {% if midterm_grade == -1 %}
+                    <div class="add_grade_button_container">
+                        <button class="addMidtermGradeBtn" id="addMidtermGradeBtn">Add Midterm Grade</button>
+                    </div>  
+                    {% else %}
+                            <h3>{{ midterm_grade }}</h3>
+                            <div class="midterm_modify_container">
+                                <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
+                                <button class="deleteMidtermGradeBtn" id="deleteMidtermGradeBtn">Delete</button>
+                            </div>
+                    {% endif %}
+                </div>
+                
+                <div class="final_container">
+                    <h3>Final Grade: </h3>
+                    {% if final_grade == -1 %}
+                    <div class="add_grade_button_container">
+                        <button class="addFinalGradeBtn" id="addFinalGradeBtn">Add Final Grade</button>
+                    </div>
+                    {% else %}
+                            <h3>{{ final_grade }}</h3>
+                            <div class="final_modify_container">
+                                <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
+                                <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
+                            </div>    
+                    {% endif %}
+                </div>
+            </div>
+            
+                
+                
+            </div>  
         </div>
     </section>
 </section>
@@ -61,9 +96,130 @@
     </div>
 {% endif %}
 
+
+<!-- ADD -->
+<div id="addMidtermGradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h2>Add Midterm Grade</h2>
+      </div> 
+      <br>
+      <form method="POST" action="{% url 'add_midterm_grade' course.CourseID %}">
+          <div style="text-align: center">
+                <label for="add_midterm_grade" style="display: inline-block; width: 200px; text-align: right">Midterm Grade :</label>
+                <input type="number" style="margin-bottom: 10px"   name="add_midterm_grade" step="0.1" min="1" max="5" required>
+                
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeAddMidtermGradeModal()">Cancel</button>
+            </div>
+      </form>
+    </div>
+</div> 
+
+<div id="addFinalGradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h2>Add Final Grade</h2>
+      </div> 
+      <br>
+      <form method="POST" action="{% url 'add_final_grade' course.CourseID %}">
+          <div style="text-align: center">
+                <label for="add_final_grade" style="display: inline-block; width: 200px; text-align: right">Final Grade:</label>
+                <input type="number" style="margin-bottom: 10px" name="add_final_grade" step="0.1" min="1" max="5" required>
+                
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeAddFinalGradeModal()">Cancel</button>
+            </div>
+      </form>
+    </div>
+</div>
+
+
+<!-- EDIT -->
+<!-- <div id="editMidtermGradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h2>Edit Midterm Grade</h2>
+      </div> 
+      <br>
+      <form method="POST" action=" ">
+          <div style="text-align: center">
+                <label for="add_midterm_grade" style="display: inline-block; width: 200px; text-align: right">Midterm Grade :</label>
+                <input type="number" style="margin-bottom: 10px"   name="add_midterm_grade" step="0.1" min="1" max="5" value="{{ midterm_grade }}" required>
+                
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditMidtermGradeModal()">Cancel</button>
+            </div>
+      </form>
+    </div>
+</div> 
+
+<div id="editFinalGradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h2Edit Final Grade</h2>
+      </div> 
+      <br>
+      <form method="POST" action=" ">
+          <div style="text-align: center">
+                <label for="add_final_grade" style="display: inline-block; width: 200px; text-align: right">Final Grade:</label>
+                <input type="number" style="margin-bottom: 10px"   name="add_final_grade" step="0.1" min="1" max="5" value="{{ final_grade }}" required>
+                
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditFinalGradeModal()">Cancel</button>
+            </div>
+      </form>
+    </div>
+</div> -->
+
+<!-- DELETE-->
+<!-- <div id="deleteMidtermGradeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete Midterm Grade?</h2>
+        </div>
+        <br>
+        <form method="post" action=" ">
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button type="submit" class="modal-button">Yes</button>
+                <button type="button" class="modal-button" onclick="closeDeleteMidtermGradeModal()">No</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="deleteFinalGradeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete Final Grade?</h2>
+        </div>
+        <br>
+        <form method="post" action=" ">
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button type="submit" class="modal-button">Yes</button>
+                <button type="button" class="modal-button" onclick="closeDeleteFinalGradeModal()">No</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
 </body>
 </html>
 
 <script src="{% static 'was/js/snackbar.js' %}"></script>
 <script src="{% static 'was/js/sidenav.js' %}"></script>
-<script src="{% static 'was/js/course_tasks_modals.js' %}"></script>
+<script src="{% static 'was/js/course_grade_modals.js' %}"></script>
