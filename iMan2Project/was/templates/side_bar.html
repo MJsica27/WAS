@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'was/css/side_bar.css' %}">
+
+</head>
+<body>
+    
+    <div class="left-bar">
+        
+        
+            {% for course in user_courses %}
+            <div class="left-bar-column">
+                <div class="left-bar-card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
+                    <div class="left-bar-container">
+                        <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Course Logo Placeholder" class="img-placeholder" style="pointer-events: none">
+                        <h6 class="subject-code">{{ course.SubjectCode }}</h6>  
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    
+</body>
+</html>
