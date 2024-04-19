@@ -19,8 +19,7 @@
     </header>
 
     <section class="details-section">
-        <div class="left-bar">
-        </div>
+        {% include 'side_bar.html' %}
 
         <div class="details-content">
             <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
@@ -136,6 +135,6 @@
 </body>
 </html>
 
-<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/snackbar.js' %}"></script> 
 <script src="{% static 'was/js/sidenav.js' %}"></script>
 <script src="{% static 'was/js/course_tasks_modals.js' %}"></script>

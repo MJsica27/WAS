@@ -18,8 +18,9 @@
     </header>
 
     <section class="courses-section">
-        <div class="left-bar">
-        </div>
+        <div id="side-bar"></div>
+        {% include 'side_bar.html' %}
+        
 
         <div class="courses-content">
             <h2 style="margin-bottom: 10px">Courses</h2>
@@ -31,7 +32,7 @@
                     {% for course in user_courses %}
                         <div class="column">
                           <div class="card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
-                            <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Course Logo Placeholder" class="img-placeholder" style="width:100%; pointer-events: none">
+                            <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Course Logo Placeholder" class="img-placeholder-course" style="width:100%; pointer-events: none">
                             <div class="container">
                               <h2>{{ course.SubjectCode }} - {{ course.Section }}</h2>
                                 <div class="description"><i>{{ course.SubjectDescription }}</i></div>
@@ -111,6 +112,6 @@
 </body>
 </html>
 
-<script src="{% static 'was/js/snackbar.js' %}"></script>
+<script src="{% static 'was/js/snackbar.js' %}"></script> 
 <script src="{% static 'was/js/sidenav.js' %}"></script>
 <script src="{% static 'was/js/add_course_modal.js' %}"></script>

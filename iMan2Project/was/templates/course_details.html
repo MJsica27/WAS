@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/course_details.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
+     
     <title>{{ course.SubjectCode }} | WAS</title>
 </head>
 
@@ -19,8 +20,8 @@
     </header>
 
     <section class="details-section">
-        <div class="left-bar">
-        </div>
+            {% include 'side_bar.html' %}
+     
 
         <div class="details-content">
             <h2 style="margin-bottom: 10px">{{ course.SubjectCode }} - {{ course.SubjectDescription }}</h2>
@@ -205,3 +206,4 @@
 <script src="{% static 'was/js/snackbar.js' %}"></script>
 <script src="{% static 'was/js/sidenav.js' %}"></script>
 <script src="{% static 'was/js/course_details_modals.js' %}"></script>
+
