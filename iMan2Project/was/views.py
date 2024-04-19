@@ -94,6 +94,8 @@ def courses(request):
 def course_details(request, course_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)
+        user_id = request.user.id
+        user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
 
         schedules = Schedule.objects.filter(CourseID=course).order_by(
             Case(
@@ -113,6 +115,7 @@ def course_details(request, course_id):
         context = {
             'course': course,
             'schedules': schedules,
+            'user_courses': user_courses
         }
         return render(request, 'course_details.html', context)
     return redirect('courses')
@@ -334,6 +337,9 @@ def course_tasks(request, course_id):
         course = Course.objects.get(CourseID=course_id)
         tasks = []
         isComplete = False
+        user_id = request.user.id
+        user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
+         
 
         if request.method == 'POST':
             isComplete = request.POST.get("listShowPendingComplete") == "1"
@@ -345,6 +351,7 @@ def course_tasks(request, course_id):
             'course': course,
             'tasks': tasks,
             'isComplete': isComplete,
+            'user_courses': user_courses
         }
         return render(request, 'course_tasks.html', context)
     return redirect('courses')
@@ -371,10 +378,13 @@ def view_selected_task(request, course_id, task_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)
         task = Task.objects.get(TaskID = task_id)
+        user_id = request.user.id
+        user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
 
         context = {
             'course': course,
             'task': task,
+            'user_courses': user_courses
         }
         return render(request, 'course_selected_task.html', context)
     
@@ -479,23 +489,38 @@ def delete_task(request, course_id, task_id):
     return redirect('course_tasks', course_id)
 
 def course_grade(request, course_id):
+    # Get the course object
     course = Course.objects.get(pk=course_id)
 
+    # Retrieve the user's courses for the sidebar
+    user_id = request.user.id
+    user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
+
+    # Initialize variables to store grades
+    midterm_grade = -1
+    final_grade = -1 
+
+    # Try to retrieve the grade for the current course
     try:
         grade = Grade.objects.get(CourseID=course)
         midterm_grade = grade.MidtermGrade
         final_grade = grade.FinalGrade 
     except Grade.DoesNotExist:
-        midterm_grade = -1
-        final_grade = -1 
+        pass
 
-    return render(request, 'course_grade.html', {
+    # Prepare the context dictionary
+    context = {
         'course': course,
         'midterm_grade': midterm_grade,
-        'final_grade': final_grade
-    })
+        'final_grade': final_grade,
+        'user_courses': user_courses  # Add user courses for the sidebar
+    }
+
+    # Render the template with the context
+    return render(request, 'course_grade.html', context)
 
 def add_midterm_grade(request, course_id):
+    
     course = Course.objects.get(pk=course_id)
  
     grades = Grade.objects.filter(CourseID=course).first()
