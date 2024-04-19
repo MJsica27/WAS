@@ -1,0 +1,55 @@
+.left-bar {
+  display: flex;
+  flex-direction: column;
+  width: 200px; /* Adjust width as needed */
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.left-bar-column {
+  margin-bottom: 10px;
+}
+
+.left-bar-card {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.img-placeholder {
+  width: 60px; /* Set the width as needed */
+  height: auto;
+  margin-right: 0px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+}
+ 
+
+.left-bar-container {
+  display: flex;
+  align-items: center;
+  position: relative; /* Added for absolute positioning */
+}
+
+.subject-code {
+  display: none; /* Hide subject code by default */
+  position: absolute;
+  top: 0;
+  left: 30px; /* Adjust as needed */
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.left-bar-container:hover .subject-code {
+  display: block; /* Show subject code on image hover */
+}
