@@ -9,3 +9,11 @@ function snackbar() {
 window.onload = function() {
     snackbar();
 };
+
+
+
+// fetch('side_bar.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('navbar-placeholder').innerHTML = data;
+//         });
