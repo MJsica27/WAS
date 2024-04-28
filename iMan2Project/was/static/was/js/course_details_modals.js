@@ -9,6 +9,28 @@ function closeEditCourseModal() {
     editCourseModal.classList.remove("show");
 }
 
+const editCoverPhotoModal = document.getElementById("editCoverPhotoModal");
+const editCoverPhotoBtn = document.getElementById("editCoverPhotoButton");
+
+editCoverPhotoBtn.onclick = function() {
+    editCoverPhotoModal.classList.add("show");
+}
+
+function closeEditCoverPhotoModal() {
+    editCoverPhotoModal.classList.remove("show");
+}
+
+const deleteCoverPhotoModal = document.getElementById("deleteCoverPhotoModal");
+const deleteCoverPhotoBtn = document.getElementById("deleteCoverPhotoButton");
+
+deleteCoverPhotoBtn.onclick = function() {
+    deleteCoverPhotoModal.classList.add("show");
+}
+
+function closeDeleteCoverPhotoModal() {
+    deleteCoverPhotoModal.classList.remove("show");
+}
+
 const deleteCourseModal = document.getElementById("deleteCourseModal");
 const deleteCourseButton = document.getElementById("deleteCourseButton");
 
@@ -40,5 +62,11 @@ window.onclick = function(event) {
     }
     if (event.target === addScheduleModal) {
         closeAddScheduleModal();
+    }
+    if (event.target === editCoverPhotoModal) {
+        closeEditCoverPhotoModal();
+    }
+    if (event.target === deleteCoverPhotoModal) {
+        closeDeleteCoverPhotoModal();
     }
 }

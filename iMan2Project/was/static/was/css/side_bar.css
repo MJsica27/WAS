@@ -1,10 +1,9 @@
 .left-bar {
   display: flex;
   flex-direction: column;
-  width: 200px; /* Adjust width as needed */
+  width: 200px;
   background-color: #f4f4f4;
   padding: 10px;
-  border-radius: 5px;
 }
 
 .left-bar-column {
@@ -21,7 +20,7 @@
 }
 
 .img-placeholder {
-  width: 60px; /* Set the width as needed */
+  width: 60px;
   height: auto;
   margin-right: 0px;
   border-top-left-radius: 20px;
@@ -35,14 +34,14 @@
 .left-bar-container {
   display: flex;
   align-items: center;
-  position: relative; /* Added for absolute positioning */
+  position: relative;
 }
 
 .subject-code {
-  display: none; /* Hide subject code by default */
+  display: none;
   position: absolute;
   top: 0;
-  left: 30px; /* Adjust as needed */
+  left: 30px;
   background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
   padding: 5px;
@@ -51,5 +50,5 @@
 }
 
 .left-bar-container:hover .subject-code {
-  display: block; /* Show subject code on image hover */
+  display: block;
 }

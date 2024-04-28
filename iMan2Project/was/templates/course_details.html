@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/course_details.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
-    <link rel="stylesheet" href="{% static 'was/css/courses.css' %}">
      
     <title>{{ course.SubjectCode }} | WAS</title>
 </head>
@@ -19,7 +18,7 @@
     <header>
         <div class="headtitle">
             <img src="{% static 'was/icons/wildcats_logo_white.ico' %}" alt="Logo" class="logo" style="pointer-events: none">
-            <h1>WAS</h1>
+            <h1>WILDCATS ACADEMIC SYNC</h1>
         </div>
         <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
     </header>
@@ -60,6 +59,18 @@
                 <div style="margin-bottom: 15px">
                     <h5 style="margin-bottom: 7px; color: #505050">Professor</h5>
                     {{ course.Professor }}
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <h1 style="margin-bottom: 15px; display: inline-block">Cover Photo:</h1>
+                <button id="deleteCoverPhotoButton" class="square-delete-button">Delete</button>
+                <button id="editCoverPhotoButton" class="square-edit-button">Edit</button>
+
+                <div>
+                     <img src="{{ course.CourseImage.url }}" alt="Course Logo Placeholder" class="img-placeholder-course" style="height: 200px; width: 200px; object-fit: cover; transform: rotate(-3deg); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);">
                 </div>
 
                 <br>
@@ -138,6 +149,41 @@
                 {% csrf_token %}
                 <button class="modal-button">Confirm</button>
                 <button type="button" class="modal-button" onclick="closeEditCourseModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editCoverPhotoModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Upload Cover Photo</h2>
+        </div>
+        <br>
+        <form method="post" enctype="multipart/form-data" action="{% url 'upload_cover_photo' course.CourseID %}">
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                <input type="file" id="course_image" name="course_image" style="width: 100%; padding: 10px; border: 2px solid #ccc; border-radius: 5px; background-color: #fff; font-size: 16px;">
+            </div>
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeEditCoverPhotoModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="deleteCoverPhotoModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Delete Cover Photo</h2>
+        </div>
+        <br>
+        <form method="post" enctype="multipart/form-data" action="{% url 'delete_cover_photo' course.CourseID %}">
+            <div class="modal-buttons">
+                {% csrf_token %}
+                <button class="modal-button">Confirm</button>
+                <button type="button" class="modal-button" onclick="closeDeleteCoverPhotoModal()">Cancel</button>
             </div>
         </form>
     </div>

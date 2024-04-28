@@ -16,7 +16,7 @@
     <header>
         <div class="headtitle">
             <img src="{% static 'was/icons/wildcats_logo_white.ico' %}" alt="Logo" class="logo" style="pointer-events: none">
-            <h1>WAS</h1>
+            <h1>WILDCATS ACADEMIC SYNC</h1>
         </div>
         <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
     </header>
@@ -36,7 +36,7 @@
                     {% for course in user_courses %}
                         <div class="column">
                           <div class="card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
-                            <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Course Logo Placeholder" class="img-placeholder-course" style="width:100%; pointer-events: none">
+                            <img src="{{ course.CourseImage.url }}" alt="Course Logo Placeholder" class="img-placeholder-course" style="height: 69%; width:100%; pointer-events: none; object-fit: cover">
                             <div class="container">
                               <h2>{{ course.SubjectCode }} - {{ course.Section }}</h2>
                                 <div class="description"><i>{{ course.SubjectDescription }}</i></div>

@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
 from .models import Course, Schedule, Task, Grade
+import os
+import uuid
 
 
 def about(request):
@@ -249,7 +251,8 @@ def add_course(request):
         if Course.objects.filter(SubjectCode=subject_code, UserID=user).exists():
             messages.error(request, 'Course already added')
         else:
-            course = Course.objects.create(UserID=user, SubjectCode=subject_code, SubjectDescription=subject_description, Section=section, Professor=professor)
+            course = Course.objects.create(UserID=user, SubjectCode=subject_code,
+                                           SubjectDescription=subject_description, Section=section, Professor=professor)
             course.save()
             messages.success(request, 'Course Added')
             return redirect('courses')
@@ -268,26 +271,66 @@ def edit_course(request, course_id):
 
         if course:
             if updated_subject_code != course.SubjectCode:
-                if Course.objects.filter(SubjectCode=updated_subject_code, CourseID=course_id).exclude(SubjectCode=course.SubjectCode).exists():
+                if Course.objects.filter(SubjectCode=updated_subject_code, CourseID=course_id).exclude(
+                        SubjectCode=course.SubjectCode).exists():
                     messages.error(request, 'Subject code already taken')
                     return redirect('course_details', course_id)
                 else:
                     course.SubjectCode = updated_subject_code
-                    course.SubjectDescription = updated_subject_description
-                    course.Section = updated_section
-                    course.Professor = updated_professor
-                    course.save()
-                    messages.success(request, 'Course Updated')
-                    return redirect('course_details', course_id)
-            else:
-                course.SubjectDescription = updated_subject_description
-                course.Section = updated_section
-                course.Professor = updated_professor
-                course.save()
-                messages.success(request, 'Course Updated')
-                return redirect('course_details', course_id)
+
+            course.SubjectDescription = updated_subject_description
+            course.Section = updated_section
+            course.Professor = updated_professor
+            course.save()
+            messages.success(request, 'Course Updated')
+            return redirect('course_details', course_id)
         else:
             messages.error(request, 'Course not found')
+
+    return redirect('course_details', course_id)
+
+
+def upload_cover_photo(request, course_id):
+    if request.method == 'POST':
+        updated_course_image = request.FILES.get('course_image')
+
+        course = Course.objects.filter(CourseID=course_id).first()
+
+        if course:
+            if updated_course_image and updated_course_image.name != 'default/courseplaceholder.png':
+                if course.CourseImage.name != 'default/courseplaceholder.png':
+                    os.remove(course.CourseImage.path)
+
+                filename, file_extension = os.path.splitext(updated_course_image.name)
+                random_text = uuid.uuid4().hex[:6]
+                new_filename = f"{request.user.id}-{course_id}-{random_text}{file_extension}"
+                course.CourseImage.save(new_filename, updated_course_image)
+
+            course.save()
+            messages.success(request, 'Course Cover Photo Updated')
+            return redirect('course_details', course_id)
+        else:
+            messages.error(request, 'Course not found')
+
+    return redirect('course_details', course_id)
+
+
+def delete_cover_photo(request, course_id):
+    course = Course.objects.filter(CourseID=course_id).first()
+
+    if course:
+        if course.CourseImage.name != 'default/courseplaceholder.png':
+            try:
+                os.remove(course.CourseImage.path)
+                course.CourseImage.name = 'default/courseplaceholder.png'
+                course.save()
+                messages.success(request, 'Course Cover Photo Deleted Successfully')
+            except Exception as e:
+                messages.error(request, f'Error deleting course cover photo: {str(e)}')
+        else:
+            messages.error(request, 'Course does not have a cover photo to delete')
+    else:
+        messages.error(request, 'Course not found')
 
     return redirect('course_details', course_id)
 
@@ -318,7 +361,8 @@ def add_schedule(request, course_id):
                 Q(StartTime__range=(start_time, end_time)) | Q(EndTime__range=(start_time, end_time)))).exists():
             messages.error(request, 'Schedule overlaps with existing schedule')
         else:
-            schedule = Schedule.objects.create(CourseID=course, DayOfWeek=day_of_week, StartTime=start_time, EndTime=end_time, Room=room)
+            schedule = Schedule.objects.create(CourseID=course, DayOfWeek=day_of_week, StartTime=start_time,
+                                               EndTime=end_time, Room=room)
             schedule.save()
             messages.success(request, 'Schedule added')
     return redirect('course_details', course_id)
@@ -332,6 +376,7 @@ def delete_schedule(request, course_id, schedule_id):
         return redirect('course_details', course_id)
     return redirect('course_details', course_id)
 
+
 def course_tasks(request, course_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)
@@ -339,14 +384,13 @@ def course_tasks(request, course_id):
         isComplete = False
         user_id = request.user.id
         user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
-         
 
         if request.method == 'POST':
             isComplete = request.POST.get("listShowPendingComplete") == "1"
 
         for task in Task.objects.filter(CourseID=course, isComplete=isComplete):
             tasks.append(task)
-            
+
         context = {
             'course': course,
             'tasks': tasks,
@@ -355,6 +399,7 @@ def course_tasks(request, course_id):
         }
         return render(request, 'course_tasks.html', context)
     return redirect('courses')
+
 
 def add_task(request, course_id):
     course = Course.objects.get(CourseID=course_id)
@@ -368,16 +413,18 @@ def add_task(request, course_id):
         if Task.objects.filter(Title=task_title, CourseID=course).exists():
             messages.error(request, 'Task with the same title already exists.')
         else:
-            task = Task.objects.create(CourseID=course, Title=task_title, Description=task_description, Deadline=task_deadline, Type=task_type)
+            task = Task.objects.create(CourseID=course, Title=task_title, Description=task_description,
+                                       Deadline=task_deadline, Type=task_type)
             task.save()
             messages.success(request, 'New Task Added')
 
     return redirect('course_tasks', course_id)
 
+
 def view_selected_task(request, course_id, task_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)
-        task = Task.objects.get(TaskID = task_id)
+        task = Task.objects.get(TaskID=task_id)
         user_id = request.user.id
         user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
 
@@ -387,11 +434,11 @@ def view_selected_task(request, course_id, task_id):
             'user_courses': user_courses
         }
         return render(request, 'course_selected_task.html', context)
-    
+
     return redirect('course_tasks')
 
-def edit_selected_task(request, course_id, task_id):
 
+def edit_selected_task(request, course_id, task_id):
     if request.method == 'POST':
         task = Task.objects.filter(TaskID=task_id).first()
 
@@ -404,9 +451,9 @@ def edit_selected_task(request, course_id, task_id):
         if task.isComplete:
             new_score = request.POST.get('score')
             new_score_over = request.POST.get('score_over')
-        
+
         # task exists
-        if task: 
+        if task:
             # new title is different from old title
             if new_title != task.Title:
                 # check if the title already taken
@@ -416,13 +463,13 @@ def edit_selected_task(request, course_id, task_id):
                 # if title is not taken
                 else:
                     task.Title = new_title
-                
+
             task.Description = new_desc
             task.Deadline = new_deadline
             task.Type = new_type
             if task.isComplete:
-                if (len(new_score.replace('.','')) > 11 or len(new_score_over.replace('.','')) > 11):
-                # check if the inputted score values exceeds 11 digits
+                if (len(new_score.replace('.', '')) > 11 or len(new_score_over.replace('.', '')) > 11):
+                    # check if the inputted score values exceeds 11 digits
                     messages.error(request, 'Invalid score (value is too long)')
                     return redirect('view_selected_task', course_id, task_id)
                 else:
@@ -433,9 +480,10 @@ def edit_selected_task(request, course_id, task_id):
             task.save()
             messages.success(request, 'Task updated')
         else:
-        # task does not exist
+            # task does not exist
             messages.error(request, 'Task not found')
     return redirect('view_selected_task', course_id, task_id)
+
 
 def complete_task(request, course_id, task_id):
     if request.method == 'POST':
@@ -453,12 +501,13 @@ def complete_task(request, course_id, task_id):
 
     return redirect('view_selected_task', course_id, task_id)
 
+
 def update_task_score(request, course_id, task_id):
     if request.method == 'POST':
         task = Task.objects.filter(TaskID=task_id).first()
 
         if request.POST.get('delete-score'):
-        # flag at course_selected_task.html for removing score
+            # flag at course_selected_task.html for removing score
             task.Score = -1
             task.Score_over = -1
             task.save()
@@ -467,8 +516,8 @@ def update_task_score(request, course_id, task_id):
             score = request.POST.get('score')
             score_over = request.POST.get('score_over')
 
-            if (len(score.replace('.','')) > 11 or len(score_over.replace('.','')) > 11):
-            # check if the inputted score values exceeds 11 digits
+            if (len(score.replace('.', '')) > 11 or len(score_over.replace('.', '')) > 11):
+                # check if the inputted score values exceeds 11 digits
                 messages.error(request, 'Invalid score (value is too long)')
             else:
                 score = float(score)
@@ -480,6 +529,7 @@ def update_task_score(request, course_id, task_id):
 
     return redirect('view_selected_task', course_id, task_id)
 
+
 def delete_task(request, course_id, task_id):
     if request.method == 'POST':
         task = Task.objects.get(TaskID=task_id)
@@ -487,6 +537,7 @@ def delete_task(request, course_id, task_id):
         task.delete()
         messages.success(request, "{0} successfully deleted".format(title))
     return redirect('course_tasks', course_id)
+
 
 def course_grade(request, course_id):
     # Get the course object
@@ -498,13 +549,13 @@ def course_grade(request, course_id):
 
     # Initialize variables to store grades
     midterm_grade = -1
-    final_grade = -1 
+    final_grade = -1
 
     # Try to retrieve the grade for the current course
     try:
         grade = Grade.objects.get(CourseID=course)
         midterm_grade = grade.MidtermGrade
-        final_grade = grade.FinalGrade 
+        final_grade = grade.FinalGrade
     except Grade.DoesNotExist:
         pass
 
@@ -519,21 +570,21 @@ def course_grade(request, course_id):
     # Render the template with the context
     return render(request, 'course_grade.html', context)
 
+
 def add_midterm_grade(request, course_id):
-    
     course = Course.objects.get(pk=course_id)
- 
+
     grades = Grade.objects.filter(CourseID=course).first()
 
     if request.method == 'POST':
         midterm_grade = request.POST.get('add_midterm_grade')
- 
+
         if grades is None:
             grade = Grade.objects.create(CourseID=course, MidtermGrade=midterm_grade, FinalGrade=-1)
             grade.save()
         elif grades.MidtermGrade == -1:
             grades.MidtermGrade = midterm_grade
-            grades.save() 
+            grades.save()
         elif grades.FinalGrade > 0:
             grades.MidtermGrade = midterm_grade
             grades.save()
@@ -545,18 +596,18 @@ def add_midterm_grade(request, course_id):
 
 def add_final_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
- 
+
     grades = Grade.objects.filter(CourseID=course).first()
 
     if request.method == 'POST':
         add_final_grade = request.POST.get('add_final_grade')
- 
+
         if grades is None:
             grade = Grade.objects.create(CourseID=course, MidtermGrade=-1, FinalGrade=add_final_grade)
             grade.save()
         elif grades.FinalGrade == -1:
             grades.FinalGrade = add_final_grade
-            grades.save() 
+            grades.save()
         elif grades.MidtermGrade > 0:
             grades.FinalGrade = add_final_grade
             grades.save()
@@ -564,6 +615,7 @@ def add_final_grade(request, course_id):
         return redirect('course_grade', course_id=course_id)
 
     return render(request, 'course_grade.html', {'course': course})
+
 
 def edit_midterm_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
@@ -580,6 +632,7 @@ def edit_midterm_grade(request, course_id):
 
     return render(request, 'edit_midterm_grade.html', {'course': course, 'grades': grades})
 
+
 def edit_final_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
     grades = Grade.objects.filter(CourseID=course).first()
@@ -595,6 +648,7 @@ def edit_final_grade(request, course_id):
 
     return render(request, 'edit_final_grade.html', {'course': course, 'grades': grades})
 
+
 def delete_midterm_grade(request, course_id):
     course = Course.objects.get(pk=course_id)
     grades = Grade.objects.filter(CourseID=course).first()
@@ -607,6 +661,7 @@ def delete_midterm_grade(request, course_id):
         return redirect('course_grade', course_id=course_id)
 
     return render(request, 'delete_midterm_grade.html', {'course': course, 'grades': grades})
+
 
 def delete_final_grade(request, course_id):
     course = Course.objects.get(pk=course_id)

@@ -1,16 +1,27 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+from django.conf import settings
+import os
 
 class Course(models.Model):
     objects = models.Manager()
 
     CourseID = models.AutoField(primary_key=True)
+    CourseImage = models.ImageField(upload_to='uploaded/', default='default/courseplaceholder.png')
     SubjectCode = models.CharField(max_length=255)
     SubjectDescription = models.CharField(max_length=255)
     Section = models.CharField(max_length=255)
     Professor = models.CharField(max_length=255)
-    UserID = models.ForeignKey(User, on_delete=models.CASCADE)
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+# if course is delete, ma delete ang mga pics associated sa course :)
+@receiver(post_delete, sender=Course)
+def delete_course_image(sender, instance, **kwargs):
+    if instance.CourseImage.name != 'default/courseplaceholder.png':
+        if os.path.isfile(instance.CourseImage.path):
+            os.remove(instance.CourseImage.path)
 
 
 class Schedule(models.Model):

@@ -22,8 +22,8 @@
 .display_midterm_grade,
 .display_final_grade {
     text-align: center;
-    font-size: 54px; /* Adjust the font size as needed */
-    padding: 10px; /* Add padding for spacing */
+    font-size: 54px;
+    padding: 10px;
     
 }
 

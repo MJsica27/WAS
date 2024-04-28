@@ -73,6 +73,31 @@ body {
     background-color: #706F69;
 }
 
+header {
+  padding: 35px 35px 35px 25px;
+  color: white;
+  border-bottom: 3px solid #1b1b1b;
+  background: #212121 linear-gradient(to bottom, #212121, #111111);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headtitle {
+  margin-left: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.headtitle .logo {
+  width: 50px;
+  height: auto;
+}
+
+.headtitle h1 {
+  margin-left: 60px;
+}
+
 
 #snackbar {
     visibility: hidden;

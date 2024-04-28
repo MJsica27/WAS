@@ -18,7 +18,7 @@
             <div class="left-bar-column">
                 <div class="left-bar-card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
                     <div class="left-bar-container">
-                        <img src="{% static 'was/images/courseplaceholder.png' %}" alt="Course Logo Placeholder" class="img-placeholder" style="pointer-events: none">
+                        <img src="{{ course.CourseImage.url }}" alt="Course Logo Placeholder" class="img-placeholder" style="width: 60px; height: 40px; pointer-events: none; object-fit: cover">
                         <h6 class="subject-code">{{ course.SubjectCode }}</h6>  
                     </div>
                 </div>

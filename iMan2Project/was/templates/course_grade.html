@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'was/css/course_main_style.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/course_grade.css' %}">
     <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
-    <link rel="stylesheet" href="{% static 'was/css/courses.css' %}">
     <title>{{ course.SubjectCode }} | WAS</title>
 </head>
 
@@ -18,7 +17,7 @@
     <header>
         <div class="headtitle">
             <img src="{% static 'was/icons/wildcats_logo_white.ico' %}" alt="Logo" class="logo" style="pointer-events: none">
-            <h1>WAS</h1>
+            <h1>WILDCATS ACADEMIC SYNC</h1>
         </div>
         <span class="sidenav-toggle" id="sidenav-toggle">&#9776;</span>
     </header>
@@ -36,16 +35,16 @@
                 <a href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
                 <a class="active" href="{% url 'course_grade' course.CourseID %}">Grades</a>
             </div>
-            
-            
+
+
             <div class="grade_container">
                 <div class="midterm_container">
                     <h3>Midterm Grade: </h3>
                     {% if midterm_grade == -1 %}
                     <div class="add_grade_button_container">
                         <button class="addMidtermGradeBtn" id="addMidtermGradeBtn">Add Midterm Grade</button>
-                    </div>  
-                    {% else %} 
+                    </div>
+                    {% else %}
                             <h1 class="display_midterm_grade">{{ midterm_grade }}</h1>
                             <div class="midterm_modify_container">
                                 <button class="editMidtermGradeBtn" id="editMidtermGradeBtn">Edit</button>
@@ -53,26 +52,26 @@
                             </div>
                     {% endif %}
                 </div>
-                
+
                 <div class="final_container">
                     <h3>Final Grade: </h3>
                     {% if final_grade == -1 %}
                     <div class="add_grade_button_container">
                         <button class="addFinalGradeBtn" id="addFinalGradeBtn">Add Final Grade</button>
                     </div>
-                    {% else %} 
-                            <h1 class="display_final_grade">{{ final_grade }}</h1> 
+                    {% else %}
+                            <h1 class="display_final_grade">{{ final_grade }}</h1>
                             <div class="final_modify_container">
                                 <button class="editFinalGradeBtn" id="editFinalGradeBtn">Edit</button>
                                 <button class="deleteFinalGradeBtn" id="deleteFinalGradeBtn">Delete</button>
-                            </div> 
+                            </div>
                     {% endif %}
                 </div>
             </div>
-            
-                
-                
-            </div>  
+
+
+
+            </div>
         </div>
     </section>
 </section>
