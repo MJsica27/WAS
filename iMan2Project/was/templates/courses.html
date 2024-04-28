@@ -20,7 +20,7 @@
     <section class="courses-section">
         <div id="side-bar"></div>
         {% include 'side_bar.html' %}
-        
+
 
         <div class="courses-content">
             <h2 style="margin-bottom: 10px">Courses</h2>
@@ -88,15 +88,15 @@
         <br>
 
         <form method="post" action="{% url 'add_course' %}">
-            <div style="text-align: center">
-                    <label for="subject_code" style="display: inline-block; width: 200px; text-align: right">Subject Code:</label>
-                    <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" required>
-                    <label for="subject_description" style="display: inline-block; width: 200px; text-align: right">Subject Description:</label>
-                    <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" required>
-                    <label for="section" style="display: inline-block; width: 200px; text-align: right">Section:</label>
-                    <input type="text" style="margin-bottom: 10px"  id="section" name="section" required>
-                    <label for="professor" style="display: inline-block; width: 200px; text-align: right">Professor:</label>
-                    <input type="text" id="professor" name="professor" required>
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                    <label for="subject_code">Subject Code:</label>
+                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_code" name="subject_code" required>
+                    <label for="subject_description">Subject Description:</label>
+                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_description" name="subject_description" required>
+                    <label for="section">Section:</label>
+                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%"  id="section" name="section" required>
+                    <label for="professor">Professor:</label>
+                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="professor" name="professor" required>
             </div>
 
             <div class="modal-buttons">

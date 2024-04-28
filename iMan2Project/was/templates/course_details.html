@@ -119,15 +119,15 @@
         </div>
         <br>
         <form method="post" action="{% url 'edit_course' course.CourseID %}">
-            <div style="text-align: center">
-                <label for="subject_code" style="display: inline-block; width: 200px; text-align: right">Subject Code:</label>
-                <input type="text" style="margin-bottom: 10px" id="subject_code" name="subject_code" value="{{ course.SubjectCode }}" required>
-                <label for="subject_description" style="display: inline-block; width: 200px; text-align: right">Subject Description:</label>
-                <input type="text" style="margin-bottom: 10px" id="subject_description" name="subject_description" value="{{ course.SubjectDescription }}" required>
-                <label for="section" style="display: inline-block; width: 200px; text-align: right">Section:</label>
-                <input type="text" style="margin-bottom: 10px"  id="section" name="section" value="{{ course.Section }}" required>
-                <label for="professor" style="display: inline-block; width: 200px; text-align: right">Professor:</label>
-                <input type="text" id="professor" name="professor" value="{{ course.Professor }}" required>
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                <label for="subject_code">Subject Code:</label>
+                <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_code" name="subject_code" value="{{ course.SubjectCode }}" required>
+                <label for="subject_description">Subject Description:</label>
+                <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_description" name="subject_description" value="{{ course.SubjectDescription }}" required>
+                <label for="section">Section:</label>
+                <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%"  id="section" name="section" value="{{ course.Section }}" required>
+                <label for="professor">Professor:</label>
+                <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="professor" name="professor" value="{{ course.Professor }}" required>
             </div>
             <div class="modal-buttons">
                 {% csrf_token %}
@@ -161,10 +161,10 @@
         </div>
         <br>
         <form method="post" action="{% url 'add_schedule' course.CourseID %}">
-            <div style="text-align: center;">
-                <div style="display: inline-block; margin-bottom: 10px; text-align: right;">
-                    <label for="day_of_week" style="display: inline-block; width: 125px;">Day of Week:</label>
-                    <select id="day_of_week" name="day_of_week" required>
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                <div>
+                    <label for="day_of_week">Day of Week:</label>
+                    <select style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="day_of_week" name="day_of_week" required>
                         <option value="monday">Monday</option>
                         <option value="tuesday">Tuesday</option>
                         <option value="wednesday">Wednesday</option>
@@ -174,21 +174,21 @@
                         <option value="sunday">Sunday</option>
                     </select>
                 </div>
-                <div style="display: inline-block; margin-bottom: 10px; text-align: right;">
+                <div>
                     <label for="room" style="display: inline-block; width: 100px;">Room:</label>
-                    <input type="text" name="room" id="room" list="roomList" placeholder="Enter Room" required>
+                    <input style="margin-top: 10px; margin-bottom: 10px; width: 100%" type="text" name="room" id="room" list="roomList" placeholder="Enter Room" required>
                     <datalist id="roomList">
                         <option value="Online">
                         <option value="Async">
                     </datalist>
                 </div>
-                <div style="margin-bottom: 10px; text-align: center;">
+                <div>
                     <label for="start_time" style="width: 100px;">Start Time:</label>
-                    <input type="time" id="start_time" name="start_time" required>
+                    <input style="margin-top: 10px; margin-bottom: 10px; width: 100%" type="time" id="start_time" name="start_time" required>
                 </div>
-                <div style="margin-bottom: 10px; text-align: center;">
+                <div>
                     <label for="end_time" style="width: 100px;">End Time:</label>
-                    <input type="time" id="end_time" name="end_time" required>
+                    <input style="margin-top: 10px; margin-bottom: 10px; width: 100%" type="time" id="end_time" name="end_time" required>
                 </div>
             </div>
             <div class="modal-buttons">

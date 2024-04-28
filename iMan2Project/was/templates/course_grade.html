@@ -105,9 +105,9 @@
       </div> 
       <br>
       <form method="POST" action="{% url 'add_midterm_grade' course.CourseID %}">
-          <div style="text-align: center">
-                <label for="add_midterm_grade" style="display: inline-block; width: 200px; text-align: right">Midterm Grade :</label>
-                <input type="number" style="margin-bottom: 10px"   name="add_midterm_grade" step="0.1" min="1" max="5" required>
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                <label for="add_midterm_grade">Midterm Grade :</label>
+                <input type="number" style="margin-top: 10px; margin-bottom: 10px; width: 100%" name="add_midterm_grade" step="0.1" min="1" max="5" required>
                 
             </div>
             <div class="modal-buttons">
@@ -126,9 +126,9 @@
       </div> 
       <br>
       <form method="POST" action="{% url 'add_final_grade' course.CourseID %}">
-          <div style="text-align: center">
-                <label for="add_final_grade" style="display: inline-block; width: 200px; text-align: right">Final Grade:</label>
-                <input type="number" style="margin-bottom: 10px" name="add_final_grade" step="0.1" min="1" max="5" required>
+            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
+                <label for="add_final_grade">Final Grade:</label>
+                <input type="number" style="margin-top: 10px; margin-bottom: 10px; width: 100%" name="add_final_grade" step="0.1" min="1" max="5" required>
                 
             </div>
             <div class="modal-buttons">
