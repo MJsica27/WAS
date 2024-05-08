@@ -93,6 +93,32 @@ def courses(request):
         return redirect('login')
 
 
+def search_courses(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            search_input = request.POST.get('search-course')
+            if search_input:
+                user_id = request.user.id
+                results = Course.objects.filter(Q(UserID=user_id) & (Q(SubjectCode__icontains=search_input) |
+                                                                     Q(SubjectDescription__icontains=search_input) |
+                                                                     Q(Section__icontains=search_input))).order_by(
+                    'SubjectCode')
+                user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
+                context = {
+                    'results': results,
+                    'user_courses': user_courses,
+                    'search_input': search_input
+                }
+                return render(request, 'search_courses.html', context)
+            else:
+                return redirect('courses')
+        else:
+            messages.error(request, "Invalid request method.")
+            return redirect('courses')
+    else:
+        return redirect('login')
+
+
 def course_details(request, course_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)

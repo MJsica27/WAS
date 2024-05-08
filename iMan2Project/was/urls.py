@@ -13,6 +13,7 @@ urlpatterns = [
     path('profile/edit_personal_info', views.edit_personal_info, name='edit_personal_info'),
     path('profile/change_password', views.change_password, name='change_password'),
     path('courses/', views.courses, name='courses'),
+    path('courses/search/', views.search_courses, name='search_courses'),
     path('courses/add_course', views.add_course, name='add_course'),
     path('courses/<int:course_id>/details', views.course_details, name='course_details'),
     path('courses/<int:course_id>/details/edit_course', views.edit_course, name='edit_course'),

@@ -33,14 +33,18 @@
 
             <form action="{% url 'search_courses' %}" method="post">
                 {% csrf_token %}
-                <input class="search-bar" type="search" id="searchBar" name="search-course" placeholder="Search courses...">
+                <input class="search-bar" type="search" id="searchBar" name="search-course" placeholder="Search courses..." value="{{  search_input }}">
                 <button class="square-search-button" type="submit">Search</button>
+                <a href="{% url 'courses' %}" style="margin-left: 0px; text-decoration: none;">Cancel</a>
             </form>
+
+            <p style="margin-top: 10px;">Search results for '<strong>{{ search_input }}</strong>'</p>
+
             <br>
 
             <div class="courses-container" style="margin-bottom: 25px">
                 <div class="row">
-                    {% for course in user_courses %}
+                    {% for course in results %}
                         <div class="column">
                           <div class="card" onclick="window.location.href = '{% url 'course_details' course.CourseID %}';">
                             <img src="{{ course.CourseImage.url }}" alt="Course Logo Placeholder" class="img-placeholder-course" style="height: 69%; width:100%; pointer-events: none; object-fit: cover">
@@ -51,13 +55,6 @@
                           </div>
                         </div>
                     {% endfor %}
-                    <div class="column">
-                      <div id="addCard" class="add-card">
-                        <div class="add-container">
-                          <h2>+Add Course</h2>
-                        </div>
-                      </div>
-                    </div>
                 </div>
             </div>
 
@@ -89,40 +86,8 @@
     </div>
 {% endif %}
 
-<div id="addCourseModal" class="modal">
-    <div class="modal-content">
-
-        <div class="modal-header">
-            <h2>Add a Course</h2>
-        </div>
-
-        <br>
-
-        <form method="post" action="{% url 'add_course' %}">
-            <div style="text-align: left; padding-left: 25px; padding-right: 25px">
-                    <label for="subject_code">Subject Code:</label>
-                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_code" name="subject_code" required>
-                    <label for="subject_description">Subject Description:</label>
-                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="subject_description" name="subject_description" required>
-                    <label for="section">Section:</label>
-                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%"  id="section" name="section" required>
-                    <label for="professor">Professor:</label>
-                    <input type="text" style="margin-top: 10px; margin-bottom: 10px; width: 100%" id="professor" name="professor" required>
-            </div>
-
-            <div class="modal-buttons">
-                {% csrf_token %}
-                <button class="modal-button">Confirm</button>
-                <button type="button" class="modal-button" onclick="closeAddCourseModal()">Cancel</button>
-            </div>
-        </form>
-
-    </div>
-</div>
-
 </body>
 </html>
 
-<script src="{% static 'was/js/snackbar.js' %}"></script> 
+<script src="{% static 'was/js/snackbar.js' %}"></script>
 <script src="{% static 'was/js/sidenav.js' %}"></script>
-<script src="{% static 'was/js/add_course_modal.js' %}"></script>
