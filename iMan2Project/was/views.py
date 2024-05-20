@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
+from django.db.models.functions import TruncDate
 from .models import Course, Schedule, Task, Grade
 import os
 import uuid
@@ -406,16 +407,28 @@ def delete_schedule(request, course_id, schedule_id):
 def course_tasks(request, course_id):
     if request.user.is_authenticated:
         course = Course.objects.get(CourseID=course_id)
-        tasks = []
+        tasks = {}
         isComplete = False
         user_id = request.user.id
         user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
 
+        # displays the list of PENDING or COMPLETED tasks
         if request.method == 'POST':
             isComplete = request.POST.get("listShowPendingComplete") == "1"
 
-        for task in Task.objects.filter(CourseID=course, isComplete=isComplete):
-            tasks.append(task)
+        # filters Task model, aggregate by Deadline Date, then ordered by Deadline_date Deadline_time
+        temp_tasks = Task.objects.filter(
+            CourseID=course, 
+            isComplete=isComplete).annotate(
+                deadline_date=TruncDate('Deadline')).order_by(
+                    'deadline_date', 'Deadline')
+
+        for task in temp_tasks:
+            deadline = task.deadline_date
+            if deadline not in tasks:
+                tasks[deadline] = []
+            tasks[deadline].append(task)
+            
 
         context = {
             'course': course,

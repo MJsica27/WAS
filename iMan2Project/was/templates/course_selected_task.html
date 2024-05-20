@@ -34,14 +34,14 @@
             <a href="">Grades</a>
           </div>
           <div class="tasks-container" style="margin-bottom: 25px">
-            <div>
-              <a href="{% url 'course_tasks' course.CourseID %}" class="back">
-                <span style="font-size: xx-large; margin-right: 10px;">&#8678;</span>
-                <span style="padding-top: 2px;">Back to Tasks List</span>
-              </a>
-            </div>
-            <hr style="margin: 25px 0px 25px 0px">
             <div class="task-content">
+              <div>
+                <a href="{% url 'course_tasks' course.CourseID %}" class="back">
+                  <span style="font-size: xx-large; margin-right: 10px;">&#8678;</span>
+                  <span style="padding-top: 2px;">Back to Tasks List</span>
+                </a>
+              </div>
+              <hr style="margin: 10px 0px 25px 0px">
               <p style="font-weight: bold;">Title: <span style="color:rgb(201, 171, 0)">{{ task.Title }}</span></p>
               <p>Task Type: <span style="color:rgb(201, 171, 0)">{{ task.Type }}</span></p><br>
               {% if task.isComplete %}

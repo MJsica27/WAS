@@ -3,6 +3,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.conf import settings
+from datetime import datetime
 import os
 
 class Course(models.Model):
@@ -46,7 +47,20 @@ class Task(models.Model):
     Score = models.DecimalField(max_digits=11, decimal_places=2, default=-1)
     Score_over = models.DecimalField(max_digits=11, decimal_places=2, default=-1)
     isComplete = models.BooleanField(default=False)
+    dateCompleted = models.DateTimeField(null=True)
     CourseID = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    @property
+    def Deadline_date(self):
+        return self.Deadline.date()
+    
+    @property
+    def Deadline_time(self):
+        return self.Deadline.time()
+
+    @property
+    def isLate(self):
+        return datetime.today() > self.Deadline
 
 
 class Grade(models.Model):

@@ -33,6 +33,7 @@ body {
   flex-direction: column;
   min-height: 60vh;
   max-height: 60vh;
+  overflow-y: scroll;
 }
 
 .tasks-list {
@@ -52,7 +53,7 @@ body {
 
 .task-content {
   flex: 1;
-  padding: 50px;
+  padding: 15px 50px 15px 50px;
   background: linear-gradient(to left, #f9ecab, #fbf0ba);
   border-radius: 10px;
   box-shadow: 5px 5px rgba(222, 208, 137, 0.438);

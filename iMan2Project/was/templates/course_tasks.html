@@ -52,13 +52,20 @@
                     </form>
                     <hr style="margin: 25px 0px 25px 0px">
                     {% if tasks %}
-                        {% for task in tasks %}
-                            <a href="{% url 'view_selected_task' course.CourseID task.TaskID %}">
-                                <div id="task-card-{{ forloop.counter }}" class="task-card" >
-                                    <p id="title">&#9751;&nbsp;&nbsp;{{ task.Title }}</p>
-                                    <p id="deadline" style="margin-left: 20px; color:#5a5a5a;">Deadline: {{ task.Deadline }}</p>
-                                </div>
-                            </a>
+                    <!-- tasks is a dict; key = date of deadline; values = tasks -->
+                        {% for deadline, tasks in tasks.items %}
+                            <h3 style="margin-bottom: 10px; margin-top:20px">{{ deadline }}</h3>
+                            <ul>
+                                {% for task in tasks %}
+                                    <a href="{% url 'view_selected_task' course.CourseID task.TaskID %}">
+                                        <div class="task-card" >
+                                            <p id="title">&#9751;&nbsp;&nbsp;{{ task.Title }}</p>
+                                            <p id="deadline" style="margin-left: 20px; color:#5a5a5a;">{{ task.Deadline_time }}</p>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+
                         {% endfor %}
                     {% else %}
                         <p>No 
