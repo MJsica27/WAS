@@ -3,7 +3,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.conf import settings
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 
 class Course(models.Model):
@@ -50,17 +50,25 @@ class Task(models.Model):
     dateCompleted = models.DateTimeField(null=True)
     CourseID = models.ForeignKey(Course, on_delete=models.CASCADE)
 
+    # return the Date value of the deadline 
     @property
     def Deadline_date(self):
         return self.Deadline.date()
     
+    # return the Time value of the deadline 
     @property
     def Deadline_time(self):
         return self.Deadline.time()
 
+    # return the Deadline in a specific string format used for the datetime-local input tag
+    @property
+    def Deadline_fordatetimelocal(self):
+        return self.Deadline.strftime('%Y-%m-%dT%H:%M')
+
+    # boolean value of the task is already late
     @property
     def isLate(self):
-        return datetime.today() > self.Deadline
+        return datetime.today().replace(tzinfo=timezone.utc) > self.Deadline
 
 
 class Grade(models.Model):

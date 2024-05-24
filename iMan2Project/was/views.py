@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
 from django.db.models.functions import TruncDate
 from .models import Course, Schedule, Task, Grade
+from datetime import datetime, timezone
 import os
 import uuid
 
@@ -409,31 +410,36 @@ def course_tasks(request, course_id):
         course = Course.objects.get(CourseID=course_id)
         tasks = {}
         isComplete = False
+        isPastDue = False
         user_id = request.user.id
         user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
 
-        # displays the list of PENDING or COMPLETED tasks
         if request.method == 'POST':
-            isComplete = request.POST.get("listShowPendingComplete") == "1"
+            # check if user clicked the "Completed" radio button
+            isComplete = request.POST.get("task-category") == "Completed"
+            # check if user clicked the "Past Due" radio button
+            isPastDue = request.POST.get("task-category") == "Past Due"
 
-        # filters Task model, aggregate by Deadline Date, then ordered by Deadline_date Deadline_time
+        # filters Task model, aggregate Deadline Date, then ordered by Deadline_date and Deadline_time
         temp_tasks = Task.objects.filter(
-            CourseID=course, 
-            isComplete=isComplete).annotate(
+            CourseID=course, isComplete=isComplete).annotate(
                 deadline_date=TruncDate('Deadline')).order_by(
                     'deadline_date', 'Deadline')
-
+        
         for task in temp_tasks:
             deadline = task.deadline_date
-            if deadline not in tasks:
-                tasks[deadline] = []
-            tasks[deadline].append(task)
-            
-
+            if (isComplete or   # display completed tasks (even it is late and completed)
+                (isPastDue and task.isLate) or # display all late tasks
+                (not isComplete and not isPastDue and not task.isLate)): #display all pending tasks
+                if deadline not in tasks:
+                    tasks[deadline] = []
+                tasks[deadline].append(task)
+                
         context = {
             'course': course,
             'tasks': tasks,
             'isComplete': isComplete,
+            'isPastDue': isPastDue,
             'user_courses': user_courses
         }
         return render(request, 'course_tasks.html', context)
@@ -532,6 +538,10 @@ def complete_task(request, course_id, task_id):
             if task.isComplete:
                 task.Score = -1
                 task.Score_over = -1
+                task.dateCompleted = None
+            else:
+                task.dateCompleted = datetime.today().replace(tzinfo=timezone.utc)
+            
             task.isComplete = not task.isComplete
             task.save()
             messages.success(request, 'Task updated')

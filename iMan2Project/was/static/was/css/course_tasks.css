@@ -39,6 +39,7 @@ body {
 .tasks-list {
   flex: 1;
   overflow-y: auto;
+  padding-top: 15px;
 }
 
 .tasks-list a,
@@ -67,6 +68,44 @@ body {
   color:#c9ab00;
 }
 
+.radio-container {
+  padding: 10px;
+  display: inline;
+  height: 100px;
+}
+
+.radio-container label {
+  display: inline;
+  margin-left: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.radio-label {
+  display: inline-block;
+  padding: 5px 15px;
+  margin: 10px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:hover + .radio-label:hover {
+  background-color: #f3bb41; /* Background color when checked */
+}
+
+input[type="radio"]:checked + .radio-label {
+  background-color: #f3bb41; /* Background color when checked */
+}
+
+
+
 .tasks-list-inputs {
   display: flex;
   flex-wrap: wrap;
@@ -93,6 +132,7 @@ body {
   background-color: #f5e077;
   margin-bottom: 10px;
   padding: 10px;
+  padding-left: 20px;
 
   border: solid 1px;
   border-color: #4b360ba7;
@@ -109,7 +149,7 @@ body {
   flex: 1;
 }
 .task-card #deadline {
-  width: 350px;
+  width: 400px;
 }
 
 /* Disable arrows in input type="number" for Chrome, Safari, Edge, Opera */

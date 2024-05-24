@@ -38,17 +38,18 @@
                 <div class="tasks-list">
                     <form method="POST" action="{% url 'course_tasks' course.CourseID %}">
                         {% csrf_token %}
-                        <label for="listShowPendingComplete" style="padding-top: 5px; margin-left: 10px; margin-right: 10px;">Show: </label>
-                        <select name="listShowPendingComplete" id="listShowPendingComplete" style="font-size: large; width: 120px;" onchange="this.form.submit()">
-                            {% if isComplete %}
-                                <option value="0">Pending</option>
-                                <option value="1" selected> Complete</option>
-                            {% else %}
-                                <option value="0" selected>Pending</option>
-                                <option value="1"> Complete</option>
-                            {% endif %}
-                            
-                        </select>
+                        Show:
+                        <div class="radio-container">
+                            <input type="radio" id="1" name="task-category" value="Pending" 
+                                onclick="this.form.submit()" {% if not isComplete and not isPastDue %}checked{% endif %}>
+                            <label for="1" class="radio-label">Pending</label>
+                            <input type="radio" id="2" name="task-category" value="Past Due" 
+                                onclick="this.form.submit()" {% if isPastDue %}checked{% endif %}>
+                            <label for="2" class="radio-label">Past Due</label>
+                            <input type="radio" id="3" name="task-category" value="Completed" 
+                                onclick="this.form.submit()" {% if isComplete %}checked{% endif %}>
+                            <label for="3" class="radio-label">Completed</label>
+                        </div>
                     </form>
                     <hr style="margin: 25px 0px 25px 0px">
                     {% if tasks %}
@@ -60,7 +61,15 @@
                                     <a href="{% url 'view_selected_task' course.CourseID task.TaskID %}">
                                         <div class="task-card" >
                                             <p id="title">&#9751;&nbsp;&nbsp;{{ task.Title }}</p>
-                                            <p id="deadline" style="margin-left: 20px; color:#5a5a5a;">{{ task.Deadline_time }}</p>
+                                            <p id="deadline" style="margin-left: 20px; color:#5a5a5a;">
+                                                {% if isComplete %}Date completed: {{ task.dateCompleted }}
+                                                {% else %}
+                                                    Time of Deadline: 
+                                                    {% if isPastDue %}{{ task.Deadline_time }} <span style="color:indianred; font-weight: bold;">LATE</span>
+                                                    {% else %}{{ task.Deadline_time }}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </p>
                                         </div>
                                     </a>
                                 {% endfor %}
@@ -70,7 +79,10 @@
                     {% else %}
                         <p>No 
                             {% if isComplete %}completed
-                            {% else %}pending
+                            {% else %}
+                                {% if isPastDue %}past due
+                                {% else %}pending
+                                {% endif %}
                             {% endif %}
                         tasks.</p>
                     {% endif %}

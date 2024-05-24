@@ -10,6 +10,19 @@
   <link rel="stylesheet" href="{% static 'was/css/course_tasks.css' %}">
   <link rel="stylesheet" href="{% static 'was/css/sidenav.css' %}">
   <title>{{ course.SubjectCode }} | WAS</title>
+  <style>
+    .yellow-text {
+      color:rgb(201, 171, 0);
+    }
+    .red-text {
+      color:indianred; 
+      font-weight: bold;
+    }
+    .green-text {
+      color: seagreen; 
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <section class="main-section">
@@ -31,7 +44,7 @@
           <div class="navbar">
             <a href="{% url 'course_details' course.CourseID %}">Details</a>
             <a class="active" href="{% url 'course_tasks' course.CourseID %}">Tasks</a>
-            <a href="">Grades</a>
+            <a href="{% url 'course_grade' course.CourseID %}">Grades</a>
           </div>
           <div class="tasks-container" style="margin-bottom: 25px">
             <div class="task-content">
@@ -42,18 +55,19 @@
                 </a>
               </div>
               <hr style="margin: 10px 0px 25px 0px">
-              <p style="font-weight: bold;">Title: <span style="color:rgb(201, 171, 0)">{{ task.Title }}</span></p>
-              <p>Task Type: <span style="color:rgb(201, 171, 0)">{{ task.Type }}</span></p><br>
+              <p style="font-weight: bold;">Title: <span class="yellow-text">{{ task.Title }}</span></p>
+              <p>Task Type: <span class="yellow-text">{{ task.Type }}</span></p><br>
               {% if task.isComplete %}
-                <p>Status: <span style="color: seagreen; font-weight: bold;">Complete</span></p>
+                <p>Status: <span class="green-text">Complete</span>{% if task.isLate %}, <span class="red-text">LATE</span>{% endif %}</p>
+                <p>Task Completed on: <span class="yellow-text">{{ task.dateCompleted }}</span></p>
                 {% if task.Score != -1 %}
-                  <p>Score: <span style="color:rgb(201, 171, 0)">{{ task.Score }} / {{ task.Score_over }}</p>
+                  <p>Score: <span class="yellow-text">{{ task.Score }} / {{ task.Score_over }}</p>
                 {% endif %}
               {% else %}
-                <p>Status: <span style="color:indianred; font-weight: bold;">Pending</span></p>
+                <p>Status: <span class="red-text">Pending{% if task.isLate %}, LATE{% endif %}</span></p>
               {% endif %}
               <br>
-              <p>Deadline of Task: <span style="color:rgb(201, 171, 0)">{{ task.Deadline }}</span></p><br>
+              <p>Deadline of Task: <span class="yellow-text">{{ task.Deadline }}</span></p><br>
               <p>{{ task.Description }}</p>
             </div>
             <hr style="margin: 25px 0px 25px 0px">
@@ -119,7 +133,7 @@
         </div>
         <div class="task-input">
           <label for="deadline">Deadline:</label>
-          <input type="datetime-local" id="deadline" name="deadline" required value="{{task.Deadline}}">
+          <input type="datetime-local" id="deadline" name="deadline" required value="{{ task.Deadline_fordatetimelocal }}">
         </div>
         <div class="task-input">
           <label for="type">Type:</label>
