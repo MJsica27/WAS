@@ -51,7 +51,7 @@
 }
  
 .editMidtermGradeBtn, .editFinalGradeBtn {
-    background-color: #008CBA;  
+    background-color: #0073e6;  
     color: white;
 }
 
@@ -67,3 +67,53 @@
 .deleteMidtermGradeBtn:hover, .deleteFinalGradeBtn:hover {
     background-color: #d32f2f;  
 }
+
+/* Style for the grade table */
+.grade-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.grade-table th, .grade-table td {
+    border: 1px solid #dddddd;
+    text-align: center; /* Center align the content */
+    padding: 8px;
+}
+
+.grade-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.grade-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.grade-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.grade-calculator-button-container {
+    margin-top: 20px; /* Adjust margin as needed */
+    text-align: left;
+}
+
+.grade-calculator-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: lightgray; /* Green background */
+    color: black;
+    text-decoration: none;
+    border: none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.grade-calculator-button:hover {
+    background-color: darkgray; /* Darker green on hover */
+}
+

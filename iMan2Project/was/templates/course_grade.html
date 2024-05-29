@@ -36,6 +36,9 @@
                 <a class="active" href="{% url 'course_grade' course.CourseID %}">Grades</a>
             </div>
 
+            <div class="grade-calculator-button-container">
+                <a href="{% url 'grade_calculator' course.CourseID %}" class="grade-calculator-button">Grade Calculator</a>
+            </div>
 
             <div class="grade_container">
                 <div class="midterm_container">

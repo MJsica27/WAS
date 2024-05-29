@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.db.models import Q, Case, When, Value, IntegerField
 from django.db.models.functions import TruncDate
 from .models import Course, Schedule, Task, Grade
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta  
 import os
 import uuid
 
@@ -588,35 +589,29 @@ def delete_task(request, course_id, task_id):
     return redirect('course_tasks', course_id)
 
 
-def course_grade(request, course_id):
-    # Get the course object
+def course_grade(request, course_id): 
     course = Course.objects.get(pk=course_id)
-
-    # Retrieve the user's courses for the sidebar
+ 
     user_id = request.user.id
     user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
-
-    # Initialize variables to store grades
+ 
     midterm_grade = -1
     final_grade = -1
-
-    # Try to retrieve the grade for the current course
+ 
     try:
         grade = Grade.objects.get(CourseID=course)
         midterm_grade = grade.MidtermGrade
         final_grade = grade.FinalGrade
     except Grade.DoesNotExist:
         pass
-
-    # Prepare the context dictionary
+ 
     context = {
         'course': course,
         'midterm_grade': midterm_grade,
         'final_grade': final_grade,
-        'user_courses': user_courses  # Add user courses for the sidebar
+        'user_courses': user_courses   
     }
-
-    # Render the template with the context
+ 
     return render(request, 'course_grade.html', context)
 
 
@@ -724,3 +719,32 @@ def delete_final_grade(request, course_id):
         return redirect('course_grade', course_id=course_id)
 
     return render(request, 'delete_final_grade.html', {'course': course, 'grades': grades})
+
+
+def grade_calculator(request, course_id):
+    course = get_object_or_404(Course, pk=course_id) 
+    tasks = Task.objects.filter(CourseID=course, isComplete=True, Score__gt=-1)
+    user_id = request.user.id
+    user_courses = Course.objects.filter(UserID=user_id).order_by('SubjectCode')
+
+    total_score = sum(task.Score for task in tasks)
+    total_possible_score = sum(task.Score_over for task in tasks)
+
+    if total_possible_score > 0:
+        percentage = (total_score / total_possible_score) * 100
+    else:
+        percentage = 0
+
+    for task in tasks:
+        task.days_late = (task.dateCompleted - task.Deadline).days if task.dateCompleted and task.Deadline else 0
+
+    context = {
+        'course': course,
+        'tasks': tasks,
+        'percentage': percentage,
+        'course': course, 
+        'user_courses': user_courses   
+    }
+
+    return render(request, 'grade_calculator.html', context)
+

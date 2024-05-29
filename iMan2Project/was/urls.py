@@ -36,6 +36,7 @@ urlpatterns = [
     path('course/<int:course_id>/edit_final_grade/', views.edit_final_grade, name='edit_final_grade'),
     path('course/<int:course_id>/delete_midterm_grade/', views.delete_midterm_grade, name='delete_midterm_grade'),
     path('course/<int:course_id>/delete_final_grade/', views.delete_final_grade, name='delete_final_grade'),
+    path('course/<int:course_id>/grade_calculator/', views.grade_calculator, name='grade_calculator'),
     path('delete_account/', views.delete_account, name='delete_account'),
     path('logout/', views.logout_user, name='logout'),
 ]
