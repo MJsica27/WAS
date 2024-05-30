@@ -54,19 +54,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for task in tasks %}
-                        <tr>
-                            <td>{{ task.Title }}</td>
-                            <td>{{ task.Deadline }}</td>
-                            <td>{{ task.dateCompleted }}</td>
-                            <td>{{ task.Score }}</td>
-                            <td>{{ task.Score_over }}</td>
-                            <td>{{ task.days_late }}</td>
-                        </tr>
-                        {% endfor %}
+                        {% if tasks %}
+                            {% for task in tasks %}
+                            <tr>
+                                <td>{{ task.Title }}</td>
+                                <td>{{ task.Deadline }}</td>
+                                <td>{{ task.dateCompleted }}</td>
+                                <td>{{ task.Score }}</td>
+                                <td>{{ task.Score_over }}</td>
+                                <td>{{ task.days_late }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6">No tasks yet. Add scores on your completed task to display and calculate</td>
+                            </tr>
+                        {% endif %}
                     </tbody>
-                </table>
-    
+                    
+                </table> 
+                <hr>
+                <br>
                 <div class="grade-summary">
                     <h3>Total Percentage: {{ percentage }}%</h3>
                     <br>
