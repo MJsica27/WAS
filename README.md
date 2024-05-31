@@ -21,8 +21,9 @@
 ## Table of Contents
 - [Installation](#installation)
 - [Running The Project](#running-the-project)
+- [Features](#features)
 - [Project Info](#project-info)
-- [Fixes](#fixes)
+- [Screenshots](#screenshots)
 
 <br>
 
@@ -93,6 +94,31 @@ py manage.py runserver
 
 <br>
 
+<!-- Project Features -->
+
+## Features
+
+1. **User Authentication**:
+   - Users can register, login, and logout.
+   - Users can reset their email and password.
+   - Users can view and update their profile.
+   - Users can delete their account.
+2. **Course Management**: 
+   - Create, view, edit, and delete courses
+   - Add, update, and delete schedules for each course
+   - Add a cover photo to the course
+   - Search for courses
+3. **Task Management**: 
+   - Create, view, edit, and delete tasks
+   - View a list of tasks (upcoming, overdue, and completed)
+   - Mark tasks as completed
+   - Add scores to tasks
+4. **Grade Tracking**: 
+   - Add, view, edit, and delete grades
+   - Grade calculation based on the entered scores
+
+<br>
+
 <!-- Project Info -->
 
 ## Project Info
@@ -143,19 +169,13 @@ py manage.py runserver
 
 <br>
 
-## Fixes
+## Screenshots
 
-#### ImportError: No module named 'MySQL'
-1. Open `cmd` and run the commands
-```
-pip install mysql_connector
-```
-```
-pip install mysql
-```
-
-#### ImportError: No module named 'Django'
-1. Open `cmd` and run the commands
-```
-pip install django
-```
+  <p align="center">
+    <a href="#screenshots">
+      <img src="https://i.imgur.com/eDETJoD.png" alt="Alt Text">
+    </a>
+    <a href="#screenshots">
+      <img src="https://i.imgur.com/ifqAj6b.png" alt="Alt Text">
+    </a>
+  </p>
