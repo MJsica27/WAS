@@ -732,18 +732,37 @@ def grade_calculator(request, course_id):
 
     if total_possible_score > 0:
         percentage = (total_score / total_possible_score) * 100
+        max_possible_grade = 5
+        expected_grade = (total_score / total_possible_score) * max_possible_grade
     else:
         percentage = 0
+        expected_grade = 0
 
     for task in tasks:
-        task.days_late = (task.dateCompleted - task.Deadline).days if task.dateCompleted and task.Deadline else 0
+        if task.dateCompleted and task.Deadline:
+            if task.dateCompleted > task.Deadline:
+                time_diff = task.dateCompleted - task.Deadline
+                days_late = time_diff.days
+                if days_late == 0:
+                    hours_late = time_diff.seconds // 3600
+                    minutes_late = (time_diff.seconds // 60) % 60
+                    if hours_late == 0:
+                        task.days_late = f" {minutes_late} minutes"
+                    else:
+                        task.days_late = f"{hours_late} hours {minutes_late} minutes"
+                else:
+                    task.days_late = f"{days_late} days"
+            else:
+                task.days_late = "0 days"
+        else:
+            task.days_late = "0 days"
 
     context = {
         'course': course,
         'tasks': tasks,
-        'percentage': percentage,
-        'course': course, 
-        'user_courses': user_courses   
+        'percentage': '{:.2f}'.format(percentage),
+        'expected_grade': '{:.1f}'.format(expected_grade),
+        'user_courses': user_courses
     }
 
     return render(request, 'grade_calculator.html', context)
